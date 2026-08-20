@@ -1,0 +1,9 @@
+SEGMENTATION PASS — NO CODEBOOK SUPPLIED
+
+This pass divides a framework document into units of analysis. It does not code.
+The coding codebook is deliberately withheld here: segmentation that anticipates
+the code set produces units cut to suit the codes, and unit boundaries are frozen
+before any coding runs, so that error cannot be corrected downstream.
+
+Segment on the document's own structure — headings, numbered clauses, bullets,
+table cells, sentence boundaries — and on nothing else.

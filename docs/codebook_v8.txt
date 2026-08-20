@@ -1,0 +1,980 @@
+AI Safety Framework Coding Codebook
+Revision of 12 August 2026 includes a ‘Quick test’ for Users in the very first table (section 1. Authoritative code
+list) and removes the mutual exclusivity for C09-C16. Some quick tests are included in the Codes themselves.
+
+
+Canonical version 8 — structural revisions, 11 August 2026
+Supersedes Canonical v7 (7 August 2026). This revision is structural: it fixes identifiers, cross-references, field
+placement and output conventions, and adds one inclusion criterion to C14. It does not change what any other
+code covers.
+
+
+1. Authoritative code list
+This table is authoritative. Where anything elsewhere in this document — including the revision notes —
+implies a different code set or a different total, this table governs.
+Fourteen active codes: six change-family (C01, C03–C07) and eight content-family (C08, C09, C11–C16).
+Each code has a permanent ID that never changes and a display number that reflects its position in this
+document. Cite codes by ID. Display numbers have already moved twice (7 August 2026) and may move again
+if codes are retired; IDs will not. Retired IDs are tombstoned and are never reissued, so a dataset coded under
+any version maps forward one-to-one.
+
+ ID        Canonical name                                  Family       Display no.   Direction       Quick test
+ C01       Competitor/Conditionality Clause Introduction   Change       Code 1        Yes             Rival’s actions
+                                                                                                      ease our own
+                                                                                                      commitment?
+
+ C02       Threshold Tightening/Loosening — RETIRED        —            —             —
+           7 Aug 2026, merged into C04
+
+ C03       Threshold Existence Change                      Change       Code 2        Yes             Does the gate
+                                                                                                      exist at all here?
+
+ C04       Obligation & Threshold Strength Shift           Change       Code 3        Yes + facet     Gate persists —
+                                                                                                      bar or firmness
+                                                                                                      moved?
+
+ C05       Adding or Dropping a Risk Theme/Domain          Change       Code 4        Yes             Category’s
+                                                                                                      presence
+                                                                                                      changed
+                                                                                                      between
+                                                                                                      versions?
+
+ C06       Definitional Drift                              Change       Code 5        Yes             Same category
+                                                                                                      — what counts
+                                                                                                      narrowed/broa
+                                                                                                      dened?
+
+ C07       Governance Tightening/Loosening                 Change       Code 6        Yes             Governance
+                                                                                                      body
+                                                                                                      gained/lost
+                                                                                                      authority?
+ ID       Canonical name                              Family         Display no.   Direction     Quick test
+ C08      Frontier AI Risk Definition & Framing       Content        Code 7        Yes (multi)   Defines, divides,
+                                                                                                 or motivates
+                                                                                                 frontier risk?
+
+ C09      Risk Severity Levels & Thresholds           Content        Code 8        No            States what the
+                                                                                                 threshold IS?
+
+ C10      Scope of Risks — RETIRED 7 Aug 2026         —              —             —
+
+ C11      Autonomy/Loss of Control Risk Theme         Content        Code 9        No            Independent
+                                                                                                 action or
+                                                                                                 evading
+                                                                                                 control?
+
+ C12      Cyber-related Risk Theme                    Content        Code 10       No            About
+                                                                                                 cyberattack or
+                                                                                                 cyber defense?
+
+ C13      CBRN Risk Theme                             Content        Code 11       No            About
+                                                                                                 chemical/bio/ra
+                                                                                                 diological/nucle
+                                                                                                 ar threats?
+
+ C14      Governance, Transparency and Disclosure     Content        Code 12       No            About
+                                                                                                 oversight,
+                                                                                                 disclosure, or
+                                                                                                 delegation?
+
+ C15      Persuasion and Influence Risk Theme         Content        Code 13       No            About
+                                                                                                 manipulating
+                                                                                                 belief or
+                                                                                                 behavior?
+
+ C16      Evaluation and Risk Management Practices    Content        Code 14       No            Describes HOW
+                                                                                                 risk is
+                                                                                                 assessed/mana
+                                                                                                 ged?
+
+
+
+Canonical names. Use the name exactly as written above. Earlier versions varied ("Adding/Dropping" for C05,
+"&" or "static Governance" for C14, "Persuasion/Manipulation" for C15); those variants are not canonical and
+should not appear in output, column headers, or cross-references.
+
+
+2. How to tag a passage
+Assignment is binary and unordered. For each passage, assign every code whose criteria the passage
+satisfies. There is no limit and no ranking — no Tag 1, no Tag 2, no judgment about which code a passage is
+"most centrally" about.
+Most passages will satisfy one or two codes. Some will satisfy three or more. Some will satisfy none, and an
+untagged passage is a valid result — not every sentence needs a code.
+Where a code carries a direction, record it alongside the assignment (see §3.2). A code assigned without its
+direction is incomplete.
+Worked examples
+"CBRN remains a tracked category in both versions, but the definition of what counts as CBRN uplift has
+narrowed."
+  •​ C13 CBRN Risk Theme
+  •​ C06 Definitional Drift [narrowed]
+OpenAI's 2025 line: "Persuasion category risks do not fit the criteria for inclusion."
+  •​ C05 Adding or Dropping a Risk Theme/Domain [dropped] — Persuasion was tracked in 2023 and is not in
+     2025
+  •​ C15 Persuasion and Influence Risk Theme — the passage is still substantively about persuasion risk
+C10 Scope of Risks was retired on 7 August 2026; see the tombstone before C11 for where in/out-of-scope
+language now goes.
+A governance passage that both tightens oversight and explains why:
+  •​ C07 Governance Tightening/Loosening [tightened]
+  •​ C14 Governance, Transparency and Disclosure
+A passage can need three or more codes when three or more things are genuinely true of it — see the
+DeepMind example under C14. That is uncommon but correct when it happens.
+
+
+3. Coding conventions
+
+3.1 "Skip" means assign 0
+Several exclusion criteria below use the word skip (e.g. "→ skip; note separately"). Throughout this codebook,
+skip means do not assign that code to this passage. It never means excluding the passage from the dataset,
+dropping the row, or leaving a field empty. Where the study records assignments as a binary matrix, skip means
+enter 0 in that code's column.
+
+3.2 Direction vocabularies
+Where a code carries a direction, the value must come from that code's closed list below. Do not invent values
+and do not write free text. Codes not listed here carry no direction.
+
+ ID         Code                                    Permitted values
+
+ C01        Competitor/Conditionality Clause        introduced · expanded
+            Introduction
+
+ C03        Threshold Existence Change              introduced · removed · reintroduced · architecture_replaced
+
+ C04        Obligation & Threshold Strength Shift   Direction: tightened · loosened. Facet (required): modality · bar ·
+                                                    both. See §3.3.
+
+ C05        Adding or Dropping a Risk               added · dropped · reintroduced · split · merged
+            Theme/Domain
+
+ C06        Definitional Drift                      narrowed · broadened
+
+ C07        Governance Tightening/Loosening         tightened · loosened
+ ID         Code                                        Permitted values
+
+ C08        Frontier AI Risk Definition & Framing       Multi-select, one or more of: A-umbrella · A-framing · A-motivation
+
+ C09,       (content codes)                             No direction. Record NA.
+ C11–C1
+ 6
+
+
+
+architecture_replaced (C03) covers a whole measurement or gating architecture being retired and replaced by a
+structurally different one — the case the code describes in its inclusion criteria. split and merged (C05) cover a
+category dividing into several or several consolidating into one, as when 2023's single Model Autonomy
+category became AI Self-improvement, Long-range Autonomy and Autonomous Replication and Adaptation in
+2025.
+
+3.3 C04 facet rule
+C04 covers two facets — a shift in verb modality and a shift in a numeric or stated bar. Record which facet
+moved:
+  •​ modality — the verb register moved and the stated bar did not.
+  •​ bar — the stated trigger value moved and the verb register did not.
+  •​ both — both moved, in the same direction.
+Divergent case. If the two move in opposite directions (the language firms up while the bar loosens, or the
+reverse), record the direction of the bar, set facet to both, and flag the passage as ambiguous with the reason
+"modality and bar diverge." Do not split the passage into two assignments.
+
+3.4 Consistency rules
+These follow from the exclusion criteria in the entries below. They are stated here so they can be checked
+directly.
+
+ Rule                                           Basis
+
+ C03 and C04 are mutually exclusive             Reciprocal exclusions, reinforced by the two Quick tests: a gate either
+                                                exists or does not (C03), or persists while its bar or firmness moves
+                                                (C04).
+
+ C06 is mutually exclusive with C04             C06 excludes threshold-value change; C04 excludes substantive change
+                                                in what counts.
+
+ C06 is mutually exclusive with C05             C06 excludes a category's presence changing; C05 excludes a
+                                                definitional shift within a persisting category.
+
+ C07 requires C14                               C07 is a change-family supplement to governance content; a
+                                                governance-robustness shift presupposes a governance passage.
+
+ C03 and C05 may co-occur                       Stated in C03's example (the Persuasion drop touches both).
+
+ C08 and C16 may co-occur                       Explicit dual-tag instruction in both entries, for passages that both frame
+                                                why ongoing risk-scanning matters and describe the scanning practice.
+
+ C08 and C09 — check                            Keep both only where the passage both fixes or divides the risk concept
+                                                and states a graded tier. If only one is true, keep only that code.
+ Rule                                       Basis
+
+ C09 and C16 may co-occur                   No longer mutually exclusive (struck 11 August 2026). Assign
+                                            both where a passage both states what a threshold is AND
+                                            describes how it is measured, evaluated, or revised. Assign C09
+                                            only where the passage states the threshold with no
+                                            accompanying practice/methodology content; assign C16 only
+                                            where the passage describes practice with no threshold content.
+
+ C11, C12, C13, C15 co-occur freely         No exclusions operate between risk themes, or between a risk theme and
+                                            any other code.
+
+
+
+3.5 Change-family codes require two versions
+C01 and C03–C07 are change-family: each requires a prior version of the same framework to compare against.
+Where no prior counterpart exists for a passage, these six codes are all 0. A commitment appearing for the first
+time is not, by itself, a change to anything.
+4. The codes
+
+C01 (Code 1). Competitor/Conditionality Clause Introduction
+
+ Code name                  Competitor/Conditionality Clause Introduction
+
+ ID                         C01
+
+ Family                     Change
+
+ Theme                      Conditional Weakening
+
+ Definition                 Passages that introduce or expand language conditioning a lab's safety commitment on
+                            what peers or competitors do — i.e. a clause allowing the lab's own commitments
+                            (safeguard stringency, deployment timing, or release schedule) to ease if a rival ships a
+                            comparable capability without equivalent precautions.
+
+ Inclusion criteria         Explicit reference to competitor or rival behaviour as a condition on the lab's own
+                            commitment; phrases like "if a comparable model is released without similar safeguards," "in
+                            light of the competitive landscape." Also covers deployment-timing or release-schedule
+                            adjustments conditioned on competitor behaviour (e.g. "we may accelerate deployment
+                            timelines if a comparable model has already been released") — the same underlying move
+                            (a safety-relevant commitment becoming conditional on a rival's actions) applied to a
+                            different lever than safeguard stringency.
+
+ Exclusion criteria         Excludes general aspirational softening that does not specifically reference competitor
+                            behaviour.
+
+ Direction                  introduced · expanded
+
+ Example                    OpenAI's 2025 v2 Preparedness Framework adding a clause about easing safeguards if a
+                            rival ships something comparable without them. (For OpenAI, these are found in 2025.)
+                            Note: this instance is the safeguard-stringency flavour of the code. The passage does not
+                            address deployment timing or release schedules, but these may appear in other labs'
+                            frameworks in relation to competitor developments. A clause conditioning timing or release
+                            schedule on competitor behaviour or market developments would equally qualify.
+
+ Counter-example            "We aim to apply these safeguards where practicable."
+
+
+
+Retired: C02 — Threshold Tightening/Loosening
+Retired 7 August 2026. Merged into C04 Obligation & Threshold Strength Shift. The two were never cleanly
+separable: the codebook's own worked examples for both were the same scenario (a pause commitment
+softening), and every clean pilot instance was either a verb-modality shift (C04's territory) or a substantive
+scope change already covered by C06 Definitional Drift. Passages about a threshold's bar value changing
+between versions now go to C04.
+The ID C02 is permanently retired and is never reissued.
+
+C03 (Code 2). Threshold Existence Change
+
+ Code name                  Threshold Existence Change
+
+ ID                         C03
+Family               Change
+
+Theme                Threshold Existence
+
+Definition           Quick test: does the threshold or gate exist at all in this version? (appeared, vanished,
+                     or was replaced by a structurally different mechanism.)
+                     Passages where a threshold or trigger point appears for the first time with no prior
+                     equivalent, disappears entirely with no replacement, or reappears in a later version after
+                     being absent. MERGED CODE: combines the former "Threshold Existence Change (newly
+                     introduced/appear/disappear)" and "Threshold Introduction/Removal" entries, which the pilot
+                     review (20 July 2026) identified as duplicates.
+
+Inclusion criteria   A threshold or category present in one version and simply absent in another, with no
+                     reworded replacement standing in its place; a new introduction; a reintroduction after
+                     absence; a removal. Also covers an entire measurement or gating architecture being retired
+                     and replaced by a structurally different one (e.g. an overall post-mitigation Scorecard system
+                     replaced by per-category capability thresholds) — the prior system's threshold disappears
+                     even though a new gating mechanism appears in its place; record this as direction
+                     architecture_replaced. Also covers a tracked level threshold being downgraded so that it no
+                     longer functions as a Tracked-category gate (e.g. folded into a Research Category) —
+                     assign C05 Adding or Dropping a Risk Theme/Domain alongside. Language such as
+                     "introduces," "newly tracked," "for the first time," "reintroduced," "restored," or explicit notice
+                     of a prior removal.
+
+Exclusion criteria   Excludes cases where a threshold persists under the same or a directly successor name but
+                     only its stringency, numeric value, or wording changes — that is C04 Obligation & Threshold
+                     Strength Shift.
+
+Direction            introduced · removed · reintroduced · architecture_replaced
+
+Example              OpenAI's Preparedness Framework dropping Persuasion in its 2025 version touches both
+                     this code and C05 Adding or Dropping a Risk Theme/Domain — assign both. Pilot example:
+                     OpenAI 2023's overall post-mitigation Scorecard gate ("medium or below to deploy") being
+                     replaced in 2025 by per-category High/Critical capability thresholds, coded C03
+                     [architecture_replaced].
+
+Counter-example      "CBRN remains a tracked category in both versions, but the definition of what counts as
+                     CBRN uplift has narrowed." (This is C06 Definitional Drift, not existence change — the
+                     category never left, and it is the substantive meaning of what counts that shifted, not a bar
+                     value or verb modality.)
+
+
+
+C04 (Code 3). Obligation & Threshold Strength Shift
+
+Code name            Obligation & Threshold Strength Shift
+
+ID                   C04
+
+Family               Change
+
+Theme                Commitment Firmness & Threshold Strength
+
+Definition           Quick test: the threshold still exists in both versions — did its bar or its firmness
+                     move? Quick test for facet: did the verb change (modality), the number change
+                     (bar), or both?
+                     MERGED CODE (merged with the former C02 Threshold Tightening/Loosening on 7 August
+                     2026). Passages tracking whether a commitment's verb modality shifts between mandatory
+                            ("will," "shall," "must"), conditional ("will, unless X"), and aspirational ("aim to," "intend to")
+                            register across versions, becoming firmer or more vague — OR where a specific numeric
+                            bar or trigger value for the same named threshold moves between versions (e.g. ">2x time
+                            saved" becoming ">5x time saved"), tightening or loosening the same metric.
+                            These two facets often arrive bundled in the same passage. Assign the code once and
+                            record which facet moved (modality, bar, or both) per §3.3; do not split the passage into two
+                            assignments.
+
+ Inclusion criteria         Modality facet. Any version-to-version comparison where the same commitment's verb
+                            strength changes. Signals: "will" becoming "will aim to" or vice versa; "will trigger" becoming
+                            "may trigger"; "at our discretion," "provided that," "unless," "except where," "as appropriate
+                            given the circumstances."
+                            Bar facet. The same named threshold's stated trigger value changing between versions
+                            while the threshold itself persists. Signals: a quantity, percentage, multiplier, time window,
+                            count, or named benchmark score that appears in both versions against the same trigger
+                            and differs between them (e.g. ">2x time saved" becoming ">5x time saved"; "within 24
+                            hours" becoming "within 7 days"). The trigger must persist under the same or a directly
+                            successor name — a new threshold appearing, or an architecture being restructured, is
+                            C03.
+
+ Exclusion criteria         Excludes the competitor-specific case already captured under C01 Competitor/Conditionality
+                            Clause Introduction. Excludes a threshold or category stated for the first time with no prior
+                            version to compare, or an entire measurement architecture being restructured — that is C03
+                            Threshold Existence Change. Excludes a substantive change in WHAT counts toward a
+                            persisting threshold's definition (e.g. a capability that used to qualify no longer does, or vice
+                            versa) where the trigger's own wording or value does not change — that is C06 Definitional
+                            Drift.
+
+ Direction                  tightened · loosened. Facet (required): modality · bar · both. For the divergent case, see
+                            §3.3.
+
+ Example                    DeepMind's v1.0 stating it "will pause deployment" upon a Critical Capability Level being
+                            reached, versus v3.1 stating it "will evaluate appropriate mitigations" upon the same trigger.
+                            [loosened, facet: modality] — Anthropic's v1.0 pause commitment reading as a firm stop at a
+                            set capability level, versus v3.3 leaving more room for judgment about timing and
+                            competitors. [loosened, facet: modality]
+
+ Coder note                 On the DeepMind example: a first reading may suggest [tightened] because the later
+                            wording is more elaborate. It is a loosening — the commitment moved from a definite action
+                            ("will pause") to a discretionary assessment ("will evaluate appropriate mitigations"). Judge
+                            the direction by the firmness of what the lab is bound to do, not by the specificity of the
+                            language describing it.
+
+ Counter-example            "We will publish our framework annually," appearing identically worded across versions —
+                            no shift in either modality or bar value.
+
+
+READ ME — telling three easily-confused codes apart
+C08 Frontier AI Risk Definition & Framing, C05 Adding or Dropping a Risk Theme/Domain, and C06
+Definitional Drift are frequently confused, since all three touch how a risk concept or category is described. Ask
+these questions, in order:
+  •​ C08 Frontier AI Risk Definition & Framing — what does the lab say frontier, existential or catastrophic
+     risk MEANS, or how does it carve risk into buckets, within a single version?
+  •​ C05 Adding or Dropping a Risk Theme/Domain — did a whole category's PRESENCE change
+     between versions: tracked in one, gone (or reintroduced) in another?
+  •​ C06 Definitional Drift — does the substantive definition of an already-present risk concept narrow or
+     broaden between versions, even though the category itself persists in both?
+Worked example: OpenAI's 2025 line "Persuasion category risks do not fit the criteria for inclusion" is assigned
+C05 [dropped] (Persuasion was tracked in 2023 and is not in 2025) plus C15 Persuasion and Influence Risk
+Theme (the passage is still substantively about persuasion). If instead CBRN stayed tracked in both versions
+but its definition of qualifying uplift narrowed, that would be C06, not C05 — the category never left.
+
+C05 (Code 4). Adding or Dropping a Risk Theme/Domain
+
+ Code name                 Adding or Dropping a Risk Theme/Domain
+
+ ID                        C05
+
+ Family                    Change
+
+ Theme                     Scope Shift — risk themes being added, dropped, or reintroduced
+
+ Definition                Passages where an entire risk category, domain, or tracked capability area is added,
+                           removed, or reintroduced between versions, as opposed to a threshold changing within a
+                           category that persists.
+
+ Inclusion criteria        A named category present in one version and absent in another, or a category that
+                           disappears in one version and reappears in a later one; language like "no longer tracked,"
+                           "new category," "reintroduced." Also covers a single category dividing into several (split) or
+                           several consolidating into one (merged).
+
+ Exclusion criteria        Excludes cases where a category's definition shifts but the category itself remains present
+                           across all versions — that is C06 Definitional Drift.
+
+ Direction                 added · dropped · reintroduced · split · merged
+
+ Example                   OpenAI's Preparedness Framework dropping the Persuasion category between the 2023
+                           Beta and v2 [dropped]; DeepMind's Frontier Safety Framework cutting the Autonomy
+                           domain and later folding misalignment work into a single domain in v3.1 [merged]. Pilot
+                           example: 2023's single "Model Autonomy" category becoming AI Self-improvement
+                           (Tracked), Long-range Autonomy (Research) and Autonomous Replication and Adaptation
+                           (Research) in 2025 [split].
+
+ Counter-example           "CBRN remains a tracked category in both versions, but the definition of what counts as
+                           CBRN uplift has narrowed."
+
+
+
+C06 (Code 5). Definitional Drift
+
+ Code name                 Definitional Drift
+
+ ID                        C06
+
+ Family                    Change
+
+ Theme                     Substantive Narrowing or Broadening of an Already-Present Risk Concept
+
+ Definition                Added following pilot review, 20 July 2026, in response to a question about whether a risk
+                           concept defined differently across two versions was already covered elsewhere — it was
+                           not. Passages where the substantive definition of a risk concept or category narrows or
+                           broadens between two versions of the same framework, even though the concept or
+                     category itself is present in both versions and no threshold or category presence changed.
+                     Change-family only: requires a prior version to compare against.
+
+Inclusion criteria   The umbrella definition of frontier, catastrophic or existential risk changing in substance
+                     between versions (e.g. what counts as "severe harm" expanding or contracting). A named
+                     risk theme (e.g. CBRN) remaining tracked in both versions, but what qualifies as an instance
+                     of that risk narrowing or broadening (e.g. what counts as "CBRN uplift").
+                     Record a direction: [narrowed] = the definition covers less than before; [broadened] = the
+                     definition covers more than before.
+                     The narrowing/broadening test: can you name one concrete real-world example that
+                     would have qualified under the old wording but would not qualify under the new wording, or
+                     vice versa? If yes, that is Definitional Drift. If you can only point to different words describing
+                     the same real-world cases either way, it is stylistic — see Exclusion criteria.
+
+Exclusion criteria   Excludes a category's presence changing (tracked → gone, or vice versa) — that is C05
+                     Adding or Dropping a Risk Theme/Domain. Excludes a numeric or tiered threshold changing
+                     while the underlying definition of the risk stays the same — that is C04 Obligation &
+                     Threshold Strength Shift. Excludes a risk being moved inside or outside document scope, or
+                     handed to another instrument: route that per the tombstone note preceding C11 — to the
+                     relevant risk-theme code, to C14 Governance, Transparency and Disclosure, or to C16
+                     Evaluation and Risk Management Practices as appropriate. Excludes cases where the
+                     definition is worded identically or with only stylistic changes across versions; use the
+                     narrowing/broadening test to check.
+
+Direction            narrowed · broadened
+
+Example              A. "CBRN remains a tracked category in both versions, but the definition of what counts as
+                     CBRN uplift has narrowed." [narrowed] — assign C13 CBRN Risk Theme alongside. B. A
+                     closer call, showing the test in action: a Cybersecurity Critical threshold reading "exploits…
+                     across all software projects" in one version and "exploits… in many hardened real-world
+                     critical systems" in the next. At first glance this could be read as rewording. Applying the
+                     test: can you name something that would have counted before but not now? Yes — a small
+                     hobbyist app or non-critical internal tool would have been "software" under the old wording
+                     but would not obviously be a "hardened real-world critical system" under the new one. That
+                     is a real narrowing, not style. [narrowed]
+
+Counter-example      OpenAI's Preparedness Framework dropping the Persuasion category outright between
+                     2023 and 2025 — the category's presence changed, not its definition. That is C05. Also a
+                     counter-example for the test itself: two versions that swap "will identify security
+                     vulnerabilities" for "will discover security flaws" — no real-world case would qualify under
+                     one wording and not the other, so the test says skip it as stylistic (assign 0; see §3.1).
+
+
+
+C07 (Code 6). Governance Tightening/Loosening
+
+Code name            Governance Tightening/Loosening
+
+ID                   C07
+
+Family               Change
+
+Theme                Governance Robustness Change
+
+Definition           Added following pilot review, 20 July 2026. Passages where the internal governance
+                     apparatus overseeing safety decisions — committees, reporting lines, approval and veto
+                     authority — is strengthened or weakened between versions of the same framework.
+                     Change-family only: requires a prior version to compare against. C07 is rare — if
+                            assigning it more than a handful of times, re-verify each instance names a
+                            specific body, reporting line, or authority; general safety-culture language is not
+                            C07.
+
+ Inclusion criteria         A body gaining or losing oversight or veto authority (e.g. a Board committee newly given
+                            power to "reverse a decision"); a reporting line added or cut (e.g. less direct reporting
+                            between Audit and the Board); a committee created, dissolved, or merged; escalation or
+                            emergency fast-track procedures added or removed. Record a direction: [tightened] = more
+                            oversight, more layers, more veto power, more direct reporting; [loosened] = less oversight,
+                            fewer layers, less veto power, less direct reporting.
+
+ Exclusion criteria         Excludes a governance body or process described identically across both versions —
+                            assign C14 Governance, Transparency and Disclosure only, with no direction. Excludes the
+                            stated reason for a change, which stays under C14's explanatory-language criterion.
+                            Excludes cases with no prior version to compare — that is C14 only, not a shift.
+
+ Direction                  tightened · loosened
+
+ Dependency                 C07 requires C14 on the same passage (see §3.4).
+
+ Example                    2025 OpenAI SAG passage adding "OpenAI Leadership can approve or reject these
+                            recommendations, and our Board's Safety and Security Committee provides oversight of
+                            these decisions" — an approval and oversight layer not present in the 2023 SAG
+                            description. [tightened]
+
+ Counter-example            SAG described in near-identical terms in both versions, with no change to who reports to
+                            whom or who holds final say — no direction applies; C14 only.
+
+
+READ ME — telling three easily-confused codes apart (repeated for convenience)
+C08 Frontier AI Risk Definition & Framing, C05 Adding or Dropping a Risk Theme/Domain, and C06
+Definitional Drift are frequently confused, since all three touch how a risk concept or category is described. Ask
+these questions, in order:
+  •​ C08 Frontier AI Risk Definition & Framing — what does the lab say frontier, existential or catastrophic
+     risk MEANS, or how does it carve risk into buckets, within a single version?
+  •​ C05 Adding or Dropping a Risk Theme/Domain — did a whole category's PRESENCE change
+     between versions: tracked in one, gone (or reintroduced) in another?
+  •​ C06 Definitional Drift — does the substantive definition of an already-present risk concept narrow or
+     broaden between versions, even though the category itself persists in both?
+Worked example: OpenAI's 2025 line "Persuasion category risks do not fit the criteria for inclusion" is assigned
+C05 [dropped] (Persuasion was tracked in 2023 and is not in 2025) plus C15 Persuasion and Influence Risk
+Theme (the passage is still substantively about persuasion). If instead CBRN stayed tracked in both versions
+but its definition of qualifying uplift narrowed, that would be C06, not C05 — the category never left.
+
+C08 (Code 7). Frontier AI Risk Definition & Framing
+
+ Code name                  Frontier AI Risk Definition & Framing
+
+ ID                         C08
+
+ Family                     Content
+Theme                Definition of concepts such as frontier risk
+
+Definition           Passages that tell you what the lab takes AI frontier risk to BE, or why it matters — either by
+                     defining the big concept, dividing catastrophic or existential risk into major kinds, or
+                     motivating why frontier or catastrophic risk requires attention (most typically, a misuse-type
+                     versus misalignment-type split, in each lab's own vocabulary).
+
+Inclusion criteria   [A-umbrella] Defining the big concept. Sentences fixing what catastrophic, frontier or
+                     existential risk means, or "unknown unknowns" that may form part of frontier risk. Signals:
+                     "we mean," "refers to," "focus on," glossary entries. A sentence without these verbs still
+                     counts if it pins down the meaning.
+                     [A-framing] Dividing frontier or catastrophic risk into major kinds (e.g. CBRN, misuse,
+                     loss of autonomy). If a lab defines frontier risk and also names other risk categories or
+                     themes (e.g. CBRN), assign the relevant risk-theme code as well.
+                     [A-motivation] Motivating why frontier or catastrophic risk matters, or why the lab is
+                     investing in studying or tracking it — opening statements about the state of the field, the
+                     stakes involved, or the case for taking the risk seriously, including framing sentences that
+                     precede or introduce a fuller definition. Signals: "we believe," "it is critical that," "fallen short
+                     of where we need to be."
+                     A passage may carry more than one of the three; record all that apply.
+
+Exclusion criteria   Dictionary entry for ONE category ("CBRN: risks of models assisting in… a CBRN threat")
+                     → assign the relevant risk-category code only; this code applies only when the passage
+                     structures frontier risk as a whole.
+                     Definition of a tool, not a risk ("A Capability Threshold is a prespecified level of AI
+                     capability…") → skip (assign 0; see §3.1); note separately.
+                     Mission or value talk with no connection to frontier or catastrophic risk at all ("we aim to build
+                     beneficial AI for all of humanity") → skip. Mission or value talk that motivates why frontier or
+                     catastrophic risk specifically matters, or why the lab studies or tracks it, is covered under
+                     [A-motivation] rather than skipped.
+                     Note: lab-specific proxies or benchmarks used to render a shared risk are not coded —
+                     handled later in analytic memos.
+                     Clarifying note (added 7 August 2026). A bare label naming the "Unknown Unknowns"
+                     bucket stays under this code, being definitional and taxonomic; the ongoing process of
+                     monitoring for and identifying new risk categories — the scanning itself — is assigned to
+                     C16 Evaluation and Risk Management Practices, because it is a practice or methodology
+                     question ("how you do it"). Where a passage does both, framing why ongoing scanning
+                     matters AND describing the scanning practice itself, assign both this code and C16.
+
+Direction            Multi-select: A-umbrella · A-framing · A-motivation
+
+Example              "'Catastrophic risk' as used in our RSP refers generally to risks of the most severe potential
+                     harms from advanced AI, such as existential threats or fundamental destabilization of global
+                     systems." (Anthropic) [A-umbrella]. "We identify CCLs for two kinds of risks: misuse risk and
+                     risks related to machine learning R&D and misalignment." (Google) [A-framing]. "We believe
+                     the scientific study of catastrophic risks from AI has fallen far short of where we need to be."
+                     (OpenAI 2023) [A-motivation].
+
+Counter-example      "Exact scenarios of loss of control risks are speculative and difficult to precisely specify."
+                     (xAI) — talks about defining without defining. Field note only.
+
+
+
+C09 (Code 8). Risk Severity Levels & Thresholds
+
+Code name            Risk Severity Levels & Thresholds
+ ID                        C09
+
+ Family                    Content
+
+ Theme                     Category and level regulation — what capability levels trigger High or Critical, and why
+
+ Definition                Passages that GRADE a risk: how severe, at what tier, past what line. Rule of thumb — this
+                           code captures what the threshold IS, not how it gets measured, revised, or governed. For
+                           evaluation methodology, benchmark results, mitigation practice and emerging-risk
+                           monitoring, see C16 Evaluation and Risk Management Practices.
+
+ Inclusion criteria        Tiers and their content: CBRN-3, CCL and TCL levels, Low–Medium–High–Critical tables,
+                           xAI's three behaviour buckets. Numeric cutoffs: "above X% on benchmark Y." No-go, halt or
+                           deployment-blocking triggers: "capability X would trigger a halt on deployment Y" → assign
+                           the relevant risk-theme code alongside this one.
+
+ Exclusion criteria        Dividing risk into kinds without grading it (“misuse risk and... misalignment risk”)
+                           → C08 Frontier AI Risk Definition & Framing. Governance structures built on the
+                           tiers (approval boards, reporting lines) → skip; consider C14. Passages that
+                           describe ONLY the procedure for measuring or updating thresholds, with no
+                           statement of what the threshold itself is (e.g. “we may adjust alert thresholds...,”
+                           “we plan to add additional thresholds...”) → skip this code (assign 0; see §3.1)
+                           and assign C16 instead. Where a passage both states a threshold’s content and
+                           describes how it is measured, evaluated, or revised, assign both this code and
+                           C16 — they are not mutually exclusive (revised 11 August 2026; see §3.4).
+
+ Direction                 None. Record NA.
+
+ Example                   "CBRN uplift level 1: Provides low to medium resourced actors uplift in reference scenarios
+                           resulting in additional expected harm at severe scale." (Google) — a tier and its content.
+
+ Counter-example           "We may run early warning evaluations more frequently or adjust alert thresholds if the rate
+                           of progress suggests our safety buffer is no longer adequate." (Google) — a procedure for
+                           revising a threshold, not what the threshold is.
+
+
+
+Retired: C10 — Scope of Risks
+Retired 7 August 2026. Scope of Risks (INSIDE / OUTSIDE / DEFERRED / DELEGATED) was dropped as its
+own code: in practice its [excluded] and [deferred] passages always duplicated C05 Adding or Dropping a Risk
+Theme/Domain or C03 Threshold Existence Change, and the code was a frequent source of confusion.
+Passages stating that a named risk is in scope, out of scope, deferred, or delegated elsewhere now route as
+follows. If the passage is substantively about a specific risk theme (C11 Autonomy/Loss of Control, C12
+Cyber-related, C13 CBRN, or C15 Persuasion and Influence), assign that risk-theme code. If it hands
+responsibility for a risk to another instrument, policy or body — the delegation case — assign C14 Governance,
+Transparency and Disclosure, which carries an explicit delegation criterion for this purpose. If it is about the
+practice of monitoring, evaluating or managing that risk, assign C16 Evaluation and Risk Management
+Practices. If none genuinely fits, it is correct to leave the passage untagged.
+The ID C10 is permanently retired and is never reissued.
+
+C11 (Code 9). Autonomy/Loss of Control Risk Theme
+Code name            Autonomy/Loss of Control Risk Theme
+
+ID                   C11
+
+Family               Content
+
+Theme                Ability to act independently, improve, and/or evade developer control
+
+Definition           Model autonomy relates to the level of independent decision-making and action a model can
+                     take without human intervention. Risks stem from a model's ability to autonomously
+                     accelerate its own capability development, potentially compromising or escaping human
+                     control. Passages where the document discusses: an AI system's capacity to execute
+                     complex, long-horizon, uninstructed actions that are fully independent; operating without
+                     human intervention, enabling scaled misuse; a model developing autonomy and evading
+                     developer control; or a model independently acquiring adaptive resources (renting its own
+                     cloud servers, etc.), self-exfiltration capabilities, or autonomous replication and adaptation
+                     (surviving, making copies of itself).
+
+Inclusion criteria   Language like "progression of autonomy," "loss of control," enabling "actors to run scaled
+                     misuse," "self-initiated actions," "fully autonomous agents" capable of "long-term /
+                     long-range / long time-horizon planning," model "adaptation" to complex scenarios;
+                     intentional model underperformance during checks ("sandbagging"), "autonomous
+                     replication," "completes chained actions," initiating high-risk tasks without human instruction,
+                     an "autonomous model creating uplift."
+
+Exclusion criteria   Excludes simple triggers that are baseline-level rule-based automation. Note that
+                     "autonomy" is adjacent to but separate from "agency" (e.g. defined by AWS as the "scope of
+                     actions that an AI model is enabled/permitted to take within an environment, and how much
+                     a human bounds an agent's capabilities/permissions").
+
+Direction            None. Record NA.
+
+Example              "In conjunction with a long range autonomy capability, models that could bypass OpenAI's
+                     technical safeguards constraining model activity, such as sandboxing or monitoring services,
+                     could compromise OpenAI's ability to…"
+
+Counter-example      "The model solves well-specified tasks demonstrating an understanding of programming."
+                     (Excluded — medium risk; no demonstration of adaptation or long-term contextual
+                     understanding; no ability to replicate or self-exfiltrate; no lack of human controllability; model
+                     not adapting to a human attempting to shut it down.)
+
+
+
+C12 (Code 10). Cyber-related Risk Theme
+
+Code name            Cyber-related Risk Theme
+
+ID                   C12
+
+Family               Content
+
+Theme                Cyber operations, cyber threats and cybersecurity
+
+Definition           The ability of an AI model to assist in the development of tools and executing operations for
+                     cyber defence and cyber offence; enterprise security posture and operations related to
+                     cyber risk identification, mitigation, and novel threats. Passages where the document
+                     discusses: risks and criticality pertaining to the use of a model by malicious actors to
+                     compromise digital systems with intent to cause harm; the potential that a frontier model
+                     may enable a novice or moderately skilled actor to discover and exploit high-value security
+                     vulnerabilities (resulting in loss or casualties) or offensive cybersecurity methods; or to
+                     independently instruct or automatically deploy cyber operations against a hardened target
+                     (see also C11 Autonomy/Loss of Control Risk Theme).
+
+Inclusion criteria   Language like "cyber threat and automated threat intelligence," "AI-orchestrated cyber
+                     espionage campaign," "kill chain," "cyber tactics, techniques, procedures," "offensive cyber
+                     operations," "ransomware," "IP theft," "scaled spear-phishing," "adaptive malware creation
+                     able to reliably evade commonly used detection solutions," thresholds for "API
+                     deployments," "cyberdefense" in relation to model weight security, "cyberoffense," "cyber
+                     red teaming," "scaled cyber attack," "threat modeling exercises and analysis of the current
+                     fraud and scams landscape."
+
+Exclusion criteria   Excludes simple or generic statements about resilience, which can pertain to cyber as much
+                     as to other risk categories or themes.
+
+Direction            None. Record NA.
+
+Example              "The Offensive Cyber Operations Threshold focuses on the potential that a frontier model
+                     may provide material uplift in excess of other publicly available research or existing tools…"
+
+Counter-example      A generic statement that includes an allusion to "typical scams," but in fact relates to
+                     another risk theme: "This makes models a significant aid to biased journalism,
+                     get-out-the-vote campaigns, and typical scams…"
+
+
+
+C13 (Code 11). CBRN Risk Theme
+
+Code name            CBRN Risk Theme
+
+ID                   C13
+
+Family               Content
+
+Theme                Ability to accelerate access to biological, chemical, radiological and/or nuclear research
+                     knowledge; discovery and R&D related to CBRN and dual-use hazards; lowering the barrier
+                     to entry to design or deploy dangerous agents
+
+Definition           Risks of models assisting in the development, preparation, and/or execution of a chemical,
+                     biological, radiological or nuclear ("CBRN") threat. This includes a model's ability to assist
+                     with lab work or synthesis and production of certain agents, to genetically modify or cultivate
+                     agents, to design or deploy devices, and to disseminate this knowledge, or to access fissile
+                     materials or ballistics.
+
+Inclusion criteria   Passages where the document discusses the ideation, acquisition, magnification,
+                     formulation and release of chemical or biological threats; potential for biological, chemical or
+                     nuclear terror events; pathogens, radiological devices, agents; references to high mortality
+                     or ease of transmission, health risk, deaths and disruption; or considerations on CBRN
+                     severity and criticality. Language like "biological weapon," "biosecurity," "biological threat
+                     vectors," "CDC," "lab automation," radioactive material acquisition, models providing
+                     "expert-level, interactive instruction that provides material uplift" related to lab processes,
+                     drug discovery or weapons design, and red-teaming in relation to chemical, biological,
+                     radiological or nuclear threats. Note: a CBRN passage can genuinely need more than one
+                     code — as a risk theme, and also as C05 Adding or Dropping a Risk Theme/Domain, and
+                     also as a narrowing or broadening under C06. Assign all that genuinely apply.
+
+Exclusion criteria   Excludes references not scoped to a Tracked or Research Category by virtue of not
+                     requiring security controls or safeguards against misuse. For example: model output to
+                     human prompts (say, on human anatomical processes) providing a user increasing levels of
+                     detail, with no High or Critical capability thresholds, no associated risk of severe harm, and
+                     no increased likelihood of biological or chemical terror.
+
+Direction            None. Record NA.
+
+Example              "The model can enable an expert to develop a highly dangerous novel threat vector (e.g.
+                     comparable to a novel CDC Class A biological agent…)"
+
+Counter-example      "CBRN risk threshold rationale presenting minimal change from status quo where other
+                     resources (e.g. textbooks, search engines) already exist."
+
+
+
+C14 (Code 12). Governance, Transparency and Disclosure
+
+Code name            Governance, Transparency and Disclosure
+
+ID                   C14
+
+Family               Content
+
+Theme                Senior executive and management committee and board governance; transparency and
+                     disclosure to the public; enterprise risk governance as a governance practice; corporate
+                     governance and disclosure, including independent oversight
+
+Definition           Passages where the document discusses internal governance practices, a governance
+                     function, centralised review processes and decision-making (senior advisory groups and
+                     committees), accountability and reporting protocols, Board committees, and third-party
+                     audit.
+
+Inclusion criteria   Language like "a Board's Safety and Security Committee providing oversight of these
+                     decisions," "internal transparency" documented through reporting to a Senior Advisory
+                     Group, the Board having the option to "reverse a decision and/or mandate a revised course
+                     of action," transparency in material findings being shared with internal stakeholders.
+                     Explanatory language. Any stated reason offered for a change flagged under any
+                     change-family code — "we revised this because…," "in response to…" — including
+                     disclosing, or no longer disclosing, a changed threshold to the Board or a benchmark to the
+                     public.
+                     Delegation (added 11 August 2026, on retirement of C10 Scope of Risks). Passages
+                     assigning responsibility for a named risk, or for its oversight, to an instrument, policy, body
+                     or process outside the framework — e.g. "our Usage Policy sets forth our standards for…,"
+                     "this is addressed under our Model Spec," "handled through our trust and safety processes,"
+                     "governed by our AI Principles." Delegation is an allocation-of-responsibility decision and
+                     belongs here. The target instrument need not be named specifically; a passage stating that
+                     a risk is handled elsewhere qualifies even where "elsewhere" is unspecified. Where the
+                     passage is also substantively about a named risk theme, assign that theme code alongside.
+                     Note. If the passage also describes the governance apparatus itself becoming more or less
+                     robust relative to a prior version, assign C07 Governance Tightening/Loosening as well, with
+                     a direction.
+
+Exclusion criteria   Excludes simple compliance requirements linked to an enterprise process (e.g. access
+                     management practices), such as "ensure all access is regularly audited and reviewed." This
+                     pertains to infosecurity best practice rather than high-level governance; consider C16
+                     Evaluation and Risk Management Practices.
+                     Excludes a sentence on expectations linked to capability thresholds, which could be
+                     assigned C09 Risk Severity Levels & Thresholds rather than this code, and C04 Obligation
+                     & Threshold Strength Shift depending on context. For example: "As we conduct further
+                   research into these and other risk domains, we expect these CCLs to evolve and for several
+                   CCLs at higher levels or in other risk domains to be added."
+                   Excludes a sentence describing how mitigation plans might be developed or controls might
+                   change in relation to critical capability levels, e.g.: "As we better understand the risks posed
+                   by models at different CCLs, and the contexts in which our models will be deployed, we will
+                   develop mitigation plans that map the CCLs to the security and deployment levels
+                   described." This could be assigned C09 (or C04 depending on version changes), and not
+                   this code. A mitigation plan is, at its most abstract, an element of good governance practice;
+                   nonetheless this code does not include mitigation plans. Where a broader phrasing or
+                   paragraph describes mitigation plans or revisions linked to controls, thresholds, capabilities
+                   or the rank-ordering of risk themes, code it through that lens — C09, or C04, possibly with a
+                   second code.
+
+Direction          None. Record NA. (For version-to-version governance change, see C07.)
+
+Example            A. "The Safety and Security Committee (SSC) of the OpenAI Board of Directors (Board) will
+                   be given visibility into processes, and can review decisions and otherwise require reports
+                   and information from OpenAI Leadership as necessary to fulfill the Board's oversight role.
+                   Where necessary, the Board may reverse a decision and/or mandate a revised course of
+                   action." B. DeepMind explaining that Harmful Manipulation was reintroduced "in response to
+                   emerging evidence of manipulative model behavior." This passage carries three codes: C05
+                   Adding or Dropping a Risk Theme/Domain [reintroduced] (the category came back), C15
+                   Persuasion and Influence Risk Theme (the topic), and C14 (the stated reason for
+                   reintroducing it). All three are true of the passage.
+
+Counter-example    "Ensure all access is regularly audited and reviewed." This is about internal access
+                   parameters — infosecurity best practice for users — not corporate governance as such,
+                   even though it refers to auditing and to review, reporting and disclosure. Consider C16.
+
+
+
+C15 (Code 13). Persuasion and Influence Risk Theme
+
+Code name          Persuasion and Influence Risk Theme
+
+ID                 C15
+
+Family             Content
+
+Theme              Strategic distortion of human belief or behaviour, including deception and manipulation
+
+Definition         Passages where the document discusses influencing or convincing people to alter core
+                   beliefs or to act on model-generated content, including by exploiting emotional or cognitive
+                   vulnerabilities; or AI systems deceiving humans, concealing their true capabilities or
+                   intentions, or providing false information.
+                   "Persuasive capability" is defined via the level of human persuasive content that can be
+                   commoditised by a model (OpenAI): risks stemming from the strategic distortion of human
+                   behaviour. For example, a model that can "create (potentially interactive) content with
+                   persuasive effectiveness strong enough to convince almost anyone to take action on a belief
+                   that goes against their natural interest" (Critical risk level). Also covers passages where
+                   persuasion, harmful or advanced persuasion, or belief manipulation relates to complex
+                   topics (e.g. an election) or conduct (e.g. self-harm); to safety and bias-prevention
+                   challenges, especially in the context of influence operations; or where a human's
+                   susceptibility or vulnerability may be tactically targeted (e.g. urging a depressed person to
+                   self-harm).
+                   A passage under this code may also carry C11 Autonomy/Loss of Control Risk Theme, but
+                   need not. Note: influence operations and public sentiment manipulation may also be tracked
+                     outside frontier risk policies, through product-abuse or trust and safety frameworks, or within
+                     cyber-related risk assessments (footnote as applicable).
+
+Inclusion criteria   Language like "persuasive threat," "coordinated influence campaigns," a weapon "for
+                     extracting secrets and interfering with democracy," persuasive "sycophancy" (in some
+                     cases), "perception hacking," "generative disinformation," "generate deceptive content at
+                     scale." Language like "deceive," "mislead," or "conceal capabilities" in some cases.
+
+Exclusion criteria   Excludes simple accuracy issues or hallucination, since those are not intentional deception.
+
+Direction            None. Record NA.
+
+Example              A model hits a dangerous tipping point or capability level if it demonstrates the ability to
+                     execute "scalable, high-stakes interactive manipulation."
+
+Counter-example      "The model sometimes generates factually incorrect outputs." (Excluded — this is an error,
+                     not intentional deception.)
+
+
+
+C16 (Code 14). Evaluation and Risk Management Practices
+
+Code name            Evaluation and Risk Management Practices
+
+ID                   C16
+
+Family               Content
+
+Theme                Evaluation methodology and risk management practice
+
+Definition           Passages describing HOW risk is assessed, tested, monitored or mitigated in practice —
+                     evaluation methodology, capability elicitation technique, benchmark and performance results
+                     (e.g. model versus human baseline, X% versus Y%), safety-baseline procedures, mitigation
+                     and safeguard implementation practice, generic security-control best practices, and the
+                     ongoing process of scanning for and capturing emerging or "unknown unknown" risk
+                     categories — as distinct from passages that define WHAT threshold or severity level triggers
+                     a designation.
+
+Inclusion criteria   Evaluation approach descriptions (e.g. scalable evaluations, deep dives, red-teaming
+                     cadence, capability elicitation methodology). Illustrative or reported benchmark and
+                     performance results, including comparisons of model versus human baseline performance.
+                     Mitigation or safeguard implementation practices not themselves tied to naming a specific
+                     severity trigger. Generic security-control best practices (access management, patching,
+                     audits, defence in depth) where not already captured by another code — assess C16 after
+                     all other codes have been decided. The emerging or unknown-risk capture process: the
+                     ongoing work of monitoring for, identifying and assessing whether a new or nascent risk
+                     category warrants tracking, as distinct from a named "Unknown Unknowns" category label
+                     itself, which is C08.
+
+Exclusion criteria   Statements that ONLY name or define a specific High, Critical, Low or Medium
+                     threshold or numeric cutoff, with no accompanying description of measurement,
+                     evaluation, or revision practice → C09 Risk Severity Levels & Thresholds only.
+                     Where a passage does both — states the threshold’s content AND describes how
+                     it is measured, evaluated, or revised — assign both C09 and this code; they are
+                     not mutually exclusive (revised 11 August 2026; see §3.4).​
+                     ​
+                  Governance body, committee, reporting-line or approval-authority content →
+                  C14 Governance, Transparency and Disclosure instead.​
+                  ​
+                  A bare label naming a risk-classification bucket (e.g. “Unknown Unknowns,”
+                  “Tracked Categories,” “Research Categories”) without describing the ongoing
+                  monitoring process → C08 Frontier AI Risk Definition & Framing instead.​
+                  ​
+                  Clarifying note (added 7 August 2026). A bare label naming the “Unknown
+                  Unknowns” bucket stays with C08, being definitional and taxonomic; the ongoing
+                  process of monitoring for and identifying new risk categories — the scanning
+                  itself — is assigned here, because it is a practice or methodology question (“how
+                  you do it”). Where a passage does both, framing why ongoing scanning matters
+                  AND describing the scanning practice itself, assign both C08 and this code.
+
+Direction         None. Record NA.
+
+Example           "GPT vs search eval: Post-PhD professionals trained in biology (specifically genetics,
+                  virology, or microbiology) experience no improvement in success rates for writing CDC
+                  Class B biological agent development instructions using a search engine and GPT versus
+                  just a search engine (X% vs X%)…" (OpenAI 2023) — a reported benchmark result, not a
+                  threshold definition. "We invest deeply in developing or adopting new science-backed
+                  evaluations that provide high precision and high recall indications of whether a covered
+                  system has reached a capability threshold…" (OpenAI 2025) — evaluation methodology.
+                  "The Preparedness team conducts research, evaluations, monitoring, and forecasting of
+                  risks… monitoring for unknown unknowns and making the case for inclusion… of any new
+                  risk categories as they emerge." (OpenAI 2023) — emerging-risk capture process.
+
+Counter-example   "[High] The model's impact is equivalent to giving every OpenAI researcher a highly
+                  performant mid-career research engineer assistant, relative to those researchers' 2024
+                  baseline." (OpenAI 2025) — this states what the threshold IS → C09, not this code, even
+                  though it also involves a comparative benchmark framing.
+

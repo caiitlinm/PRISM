@@ -1,0 +1,704 @@
+{
+  "generated": "2026-08-15",
+  "what": "Many-to-one alignments in which the target excerpts concatenate to exactly the prior excerpt, ignoring whitespace and punctuation. The text is unchanged; only the segmentation granularity differs between the two versions.",
+  "why_it_happens": "A1 segments each document independently — that is required, since each version is segmented exactly once, ever — so there is no mechanism keeping granularity consistent across versions. Where two versions share near-identical text, ordinary A1 jitter (paragraph-level in one, sentence-level in the other) surfaces as a split.",
+  "risk": "The target excerpt is a strict subset of the prior excerpt, which reads to a change coder like narrowed or removed content. If B-change codes these as changes, the change signal is inflated on exactly the transitions the study cares most about.",
+  "distribution": "Concentrated in the Anthropic point releases (85% of many-to-one on v2-1_v2-2, 91% on v3-0_v3-1) because those documents are near-identical. The first half has 5 of 121 (4%), so uncorrected this is a cross-lab asymmetry, not a uniform effect.",
+  "totals": {
+    "first_half": {
+      "cosmetic": 5,
+      "many_to_one": 121
+    },
+    "second_half": {
+      "cosmetic": 61,
+      "many_to_one": 207
+    }
+  },
+  "detection": "Mechanical and exact — no judgement. This report is regenerable from the frozen units and the crosswalks, so it can be applied as a post-hoc filter at Stage 8 without touching any approved artifact.",
+  "by_transition": {
+    "ANT-RSP-v2-0_v2-1": {
+      "transition": "ANT-RSP-v2-0_v2-1",
+      "prior": "ANT-RSP-v2-0",
+      "target": "ANT-RSP-v2-1",
+      "splits": 5,
+      "target_units_affected": 10,
+      "target_units_total": 322,
+      "items": [
+        {
+          "prior_unit_id": "ANT-RSP-v2-0-0179",
+          "target_unit_ids": [
+            "ANT-RSP-v2-1-0159",
+            "ANT-RSP-v2-1-0160"
+          ],
+          "section_heading": "4.2. ASL-3 Security Standard",
+          "prior_excerpt": "The following groups are out of scope for the ASL-3 Security Standard because further testing (as discussed below) should confirm that the model would not meaningfully increase their ability to do harm: state-sponsored programs that specifically target us (e.g., through novel attack chains or insider compromise) and a small number (~10) of non-state actors with state-level resourcing or backing that are capable of developing novel attack chains that utilize 0-day attacks."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-0-0183",
+          "target_unit_ids": [
+            "ANT-RSP-v2-1-0164",
+            "ANT-RSP-v2-1-0165"
+          ],
+          "section_heading": "4.2. ASL-3 Security Standard",
+          "prior_excerpt": "Security frameworks: Align to and, as needed, extend industry-standard security frameworks for addressing identified risks, such as disclosure of sensitive information, tampering with accounts and assets, and unauthorized elevation of privileges with the appropriate controls. This includes:"
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-0-0213",
+          "target_unit_ids": [
+            "ANT-RSP-v2-1-0190",
+            "ANT-RSP-v2-1-0191"
+          ],
+          "section_heading": "6.1. Continue Deployment and Further Scaling",
+          "prior_excerpt": "To summarize the commitments and procedures outlined above, we may deploy or store a model if either of the following criteria are met: (1) the model's capabilities are sufficiently far away from the existing Capability Thresholds, making the current ASL-2 Standard appropriate; or (2) the model's capabilities have surpassed the existing Capabilities Threshold, but we have implemented the ASL-3 Required Safeguards and confirmed that the model is sufficiently far away from the next set of Capability Thresholds as to make the model ASL-3 Standard appropriate."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-0-0233",
+          "target_unit_ids": [
+            "ANT-RSP-v2-1-0206",
+            "ANT-RSP-v2-1-0207"
+          ],
+          "section_heading": "7. Governance and Transparency / 7.1. Internal Governance",
+          "prior_excerpt": "We consider implementation of the ASL-3 Security Standard alone sufficient to continue training, regardless of whether the ASL-3 Deployment Standard is satisfied. \"Comparable or greater capabilities\" is operationalized as 1x or more in Effective Compute."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-0-0329",
+          "target_unit_ids": [
+            "ANT-RSP-v2-1-0306",
+            "ANT-RSP-v2-1-0307"
+          ],
+          "section_heading": "Changelog",
+          "prior_excerpt": "Rather than detailing specific operational and technical safeguards, we now specify the overall security or deployment standards and requirements for meeting them. This is to allow us to adapt our safeguards more flexibly as our understanding of risks and possible safeguards improves."
+        }
+      ]
+    },
+    "ANT-RSP-v2-1_v2-2": {
+      "transition": "ANT-RSP-v2-1_v2-2",
+      "prior": "ANT-RSP-v2-1",
+      "target": "ANT-RSP-v2-2",
+      "splits": 22,
+      "target_units_affected": 44,
+      "target_units_total": 348,
+      "items": [
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0002",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0002",
+            "ANT-RSP-v2-2-0003"
+          ],
+          "section_heading": "Executive Summary",
+          "prior_excerpt": "We are now updating our RSP to account for the lessons we've learned over the last year. This updated policy reflects our view that risk governance in this rapidly evolving domain should be proportional, iterative, and exportable."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0003",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0004",
+            "ANT-RSP-v2-2-0005"
+          ],
+          "section_heading": "Executive Summary",
+          "prior_excerpt": "Background. AI Safety Level Standards (ASL Standards) are a set of technical and operational measures for safely training and deploying frontier AI models. These currently fall into two categories: Deployment Standards and Security Standards."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0004",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0006",
+            "ANT-RSP-v2-2-0007"
+          ],
+          "section_heading": "Executive Summary",
+          "prior_excerpt": "As model capabilities increase, so will the need for stronger safeguards, which are captured in successively higher ASL Standards. At present, all of our models must meet the ASL-2 Deployment and Security Standards."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0005",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0008",
+            "ANT-RSP-v2-2-0009"
+          ],
+          "section_heading": "Executive Summary",
+          "prior_excerpt": "To determine when a model has become sufficiently advanced such that its deployment and security measures should be strengthened, we use the concepts of Capability Thresholds and Required Safeguards. A Capability Threshold tells us when we need to upgrade our protections, and the corresponding Required Safeguards tell us what standard should apply."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0009",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0013",
+            "ANT-RSP-v2-2-0014"
+          ],
+          "section_heading": "Executive Summary",
+          "prior_excerpt": "We will first conduct preliminary assessments to determine whether a more comprehensive evaluation is needed. For models requiring comprehensive testing, we will assess whether the model is unlikely to reach any relevant Capability Thresholds absent surprising advances in widely accessible post-training enhancements."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0011",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0016",
+            "ANT-RSP-v2-2-0017"
+          ],
+          "section_heading": "Executive Summary",
+          "prior_excerpt": "If, however, we are unable to make the required showing, we will act as though the model has surpassed the Capability Threshold. This means that we will both upgrade to the ASL-3 Required Safeguards and conduct a follow-up capability assessment to confirm that the ASL-4 Standard is not necessary."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0013",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0019",
+            "ANT-RSP-v2-2-0020"
+          ],
+          "section_heading": "Executive Summary",
+          "prior_excerpt": "For the ASL-3 Deployment Standard, we will evaluate whether it is robust to persistent attempts to misuse the capability in question. For the ASL-3 Security Standard, we will evaluate whether it is highly protected against non-state attackers attempting to steal model weights."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0021",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0028",
+            "ANT-RSP-v2-2-0029"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "As frontier AI models advance, we believe they will bring about transformative benefits for our society and economy. AI could accelerate scientific discoveries, revolutionize healthcare, enhance our education system, and create entirely new domains for human creativity and innovation."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0026",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0034",
+            "ANT-RSP-v2-2-0035"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "We are now updating our RSP to account for the lessons we've learned over the last year. This policy reflects our view that risk governance in this rapidly evolving domain should be proportional, iterative, and exportable."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0031",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0040",
+            "ANT-RSP-v2-2-0041"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "We will thus regularly measure the capability of our models and adjust our safeguards accordingly. Further, we will continue to research potential risks and next-generation mitigation techniques."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0035",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0045",
+            "ANT-RSP-v2-2-0046"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "In the long term, we hope that our policy may offer relevant insights for regulation. In the meantime, we will continue to share our findings with policymakers."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0038",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0049",
+            "ANT-RSP-v2-2-0050"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "Further, we conduct research to understand the broader societal impacts of our models. Our Responsible Scaling Policy complements our work in these areas, contributing to our understanding of current and potential risks."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0039",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0051",
+            "ANT-RSP-v2-2-0052"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "At Anthropic, we are committed to developing AI responsibly and transparently. Since our founding, we have recognized the importance of proactively addressing potential risks as we push the boundaries of AI capability and of clearly communicating about the nature and extent of those risks."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0044",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0057",
+            "ANT-RSP-v2-2-0058"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "We actively welcome feedback on our policy and suggestions for improvement from other entities engaged in frontier AI risk evaluations or safety and security standards. To submit your feedback or suggestions, please contact us at rsp@anthropic.com."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0046",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0060",
+            "ANT-RSP-v2-2-0061"
+          ],
+          "section_heading": "1. Background",
+          "prior_excerpt": "As model capabilities increase, so will the need for stronger safeguards, which are captured in successively higher ASL Standards. Definitions of ASL Standards and other key terms are available in Appendix A."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0064",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0079",
+            "ANT-RSP-v2-2-0080"
+          ],
+          "section_heading": "2. Capability Thresholds and Required Safeguards",
+          "prior_excerpt": "In developing these standards, we have weighed the risks and benefits of frontier model development. We believe these safeguards are achievable with sufficient investment and advance planning into research and development and would advocate for the industry as a whole to adopt them."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0065",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0081",
+            "ANT-RSP-v2-2-0082"
+          ],
+          "section_heading": "2. Capability Thresholds and Required Safeguards",
+          "prior_excerpt": "We will conduct assessments to inform when to implement the Required Safeguards (see Section 4). The Capability Thresholds summarized below are available in full in Appendix C."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0072",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0089",
+            "ANT-RSP-v2-2-0090"
+          ],
+          "section_heading": "2. Capability Thresholds and Required Safeguards",
+          "prior_excerpt": "The ASL-3 Security Standard is required. In addition, we will develop an affirmative case that (1) identifies the most immediate and relevant risks from models pursuing misaligned goals and (2) explains how we have mitigated these risks to acceptable levels."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0077",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0095",
+            "ANT-RSP-v2-2-0096"
+          ],
+          "section_heading": "2. Capability Thresholds and Required Safeguards",
+          "prior_excerpt": "These Capability Thresholds represent our current understanding of the most pressing catastrophic risks. As our understanding evolves, we may identify additional thresholds."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0092",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0110",
+            "ANT-RSP-v2-2-0111"
+          ],
+          "section_heading": "2. Capability Thresholds and Required Safeguards",
+          "prior_excerpt": "We will conduct either pre- or post-deployment testing, including specialized evaluations. We will document any salient results alongside our Capability Reports (see Section 3)."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0218",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0238",
+            "ANT-RSP-v2-2-0239"
+          ],
+          "section_heading": "7. Governance and Transparency / 7.1. Internal Governance",
+          "prior_excerpt": "Further, we will track and investigate any reported or otherwise identified potential instances of noncompliance with this policy. Where reports are substantiated, we will take appropriate and proportional corrective action and document the same."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v2-1-0312",
+          "target_unit_ids": [
+            "ANT-RSP-v2-2-0333",
+            "ANT-RSP-v2-2-0334"
+          ],
+          "section_heading": "Changelog",
+          "prior_excerpt": "For any general access systems, we still require passing intensive red-teaming. For internal use, safety testing and deployments to sufficiently trusted users, we will instead require a combination of access controls and monitoring."
+        }
+      ]
+    },
+    "ANT-RSP-v2-2_v3-0": {
+      "transition": "ANT-RSP-v2-2_v3-0",
+      "prior": "ANT-RSP-v2-2",
+      "target": "ANT-RSP-v3-0",
+      "splits": 1,
+      "target_units_affected": 2,
+      "target_units_total": 278,
+      "items": [
+        {
+          "prior_unit_id": "ANT-RSP-v2-2-0345",
+          "target_unit_ids": [
+            "ANT-RSP-v3-0-0273",
+            "ANT-RSP-v3-0-0274"
+          ],
+          "section_heading": "Changelog",
+          "prior_excerpt": "ASL-3 Security: This update excludes both sophisticated insiders and state-compromised insiders from the ASL-3 Security Standard. Previously, only \"highly sophisticated state-compromised insiders\" were explicitly excluded."
+        }
+      ]
+    },
+    "ANT-RSP-v3-0_v3-1": {
+      "transition": "ANT-RSP-v3-0_v3-1",
+      "prior": "ANT-RSP-v3-0",
+      "target": "ANT-RSP-v3-1",
+      "splits": 20,
+      "target_units_affected": 40,
+      "target_units_total": 301,
+      "items": [
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0001",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0001",
+            "ANT-RSP-v3-1-0002"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "Our Responsible Scaling Policy (RSP) is our voluntary framework for managing catastrophic risks from advanced AI systems. It establishes how we identify and evaluate risks, how we make decisions about AI development and deployment, and, from the perspective of the world at large, how we aim to make sure that the benefits of our models exceed their costs."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0002",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0003",
+            "ANT-RSP-v3-1-0004"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "We have always intended for our RSP to be a living document. We will continually update the RSP as we learn more about AI capabilities and risks, develop and refine technical safety measures, and gain more experience navigating an ecosystem in which the risks to society depend on the actions of many developers."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0005",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0007",
+            "ANT-RSP-v3-1-0008"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "We lay this out in a table that maps capability thresholds to the mitigations we believe they call for. We also include our planned mitigations as a company, which are drawn from other sections of this policy and associated artifacts."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0006",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0009",
+            "ANT-RSP-v3-1-0010"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "This approach represents a change from our previous RSP, driven by a collective action problem. The overall level of catastrophic risk from AI depends on the actions of multiple AI developers, not just one."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0011",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0016",
+            "ANT-RSP-v3-1-0017"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "We aspire to advance the latter through a mixture of example-setting, addressing unsolved technical problems, advocacy through industry groups, and policy advocacy. But we cannot commit to following them unilaterally."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0012",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0018",
+            "ANT-RSP-v3-1-0019"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "Frontier Safety Roadmaps are a new requirement under our RSP. These will describe our concrete plans for making progress across Security, Alignment, Safeguards, and Policy."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0021",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0028",
+            "ANT-RSP-v3-1-0029"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "Our RSP is only one part of our overall approach to safety. For instance, although this policy focuses on catastrophic risks, they are not the only risks we consider important—our Usage Policy and societal impacts research address other concerns."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0022",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0030",
+            "ANT-RSP-v3-1-0031"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "Further, the RSP may serve some regulatory requirements, but it is not designed to be comprehensive. We want to keep it focused on our most central measures for addressing the catastrophic risks we prioritize most, rather than expand it to address every obligation we face."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0024",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0033",
+            "ANT-RSP-v3-1-0034"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "\"Catastrophic risk\" as used in our RSP refers generally to risks of the most severe potential harms from advanced AI, such as existential threats or fundamental destabilization of global systems. We use this term in its plain meaning rather than adopting any specific statutory definition."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0026",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0036",
+            "ANT-RSP-v3-1-0037"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "This section outlines our recommendations for what it would take, at an industry-wide level, to keep catastrophic risks reliably low through a period of rapid advances in AI capabilities. We lay this out in a three-column table."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0027",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0038",
+            "ANT-RSP-v3-1-0039"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "The left column identifies capability thresholds that would call for heightened mitigations. The middle column provides an overview of our planned mitigations, which we have set forth more fully in our Frontier Safety Roadmap and other sections of this policy."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0030",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0042",
+            "ANT-RSP-v3-1-0043"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "In particular, we cannot unilaterally and unconditionally commit to staying in line with the industry-wide recommendations in the right column. However, these recommendations will drive important aspects of our work:"
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0031",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0044",
+            "ANT-RSP-v3-1-0045"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "We use these recommendations as the north star for our risk mitigations planning as well as our public policy work. We will strive to advance these recommendations through a mixture of example-setting, addressing unsolved technical problems, advocacy through industry groups, and policy advocacy."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0035",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0049",
+            "ANT-RSP-v3-1-0050"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "This leaves flexibility in how risk thresholds are evaluated and how safety is achieved and argued for. But it creates a challenge: one actor's view of what constitutes good risk assessment and mitigation may be very different from another's."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0039",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0054",
+            "ANT-RSP-v3-1-0055"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "We expect that the recommendations for industry-wide safety will evolve significantly, as we learn more about AI capabilities, threat models, and risk mitigations. We hope these recommendations will become increasingly specific over time."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0072",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0089",
+            "ANT-RSP-v3-1-0090"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "This capability threshold is intended to reflect our definition of highly capable models (see Section 3.6). It may be sensible to add earlier, and/or easier-to-measure, thresholds that trigger less demanding versions of the mitigations for this threshold."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0084",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0104",
+            "ANT-RSP-v3-1-0105"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "Even malicious employees and other insiders with maximal levels of access will not be significantly enabled to cause catastrophic harm. This requires (among other things) accounting for internal tools that are less restricted than product surfaces, and for the possibility of unauthorized modification of models."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0090",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0111",
+            "ANT-RSP-v3-1-0112"
+          ],
+          "section_heading": "2. Frontier Safety Roadmap",
+          "prior_excerpt": "Maintaining and reporting on this Roadmap is part of our work under the RSP. It will be shared with all full-time employees as well as our Board of Directors (Board) and Long-Term Benefit Trust (LTBT), and published in redacted form."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0092",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0114",
+            "ANT-RSP-v3-1-0115"
+          ],
+          "section_heading": "2. Frontier Safety Roadmap",
+          "prior_excerpt": "Our Frontier Safety Roadmap is subject to change. Some changes may simply reflect our evolving understanding of how best to mitigate key risks."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-0-0096",
+          "target_unit_ids": [
+            "ANT-RSP-v3-1-0119",
+            "ANT-RSP-v3-1-0120"
+          ],
+          "section_heading": "2. Frontier Safety Roadmap",
+          "prior_excerpt": "Our current Frontier Safety Roadmap is available at anthropic.com/responsible-scaling-policy/roadmap. We will also keep past Roadmaps available at that link."
+        }
+      ]
+    },
+    "ANT-RSP-v3-1_v3-2": {
+      "transition": "ANT-RSP-v3-1_v3-2",
+      "prior": "ANT-RSP-v3-1",
+      "target": "ANT-RSP-v3-2",
+      "splits": 3,
+      "target_units_affected": 6,
+      "target_units_total": 313,
+      "items": [
+        {
+          "prior_unit_id": "ANT-RSP-v3-1-0022",
+          "target_unit_ids": [
+            "ANT-RSP-v3-2-0022",
+            "ANT-RSP-v3-2-0023"
+          ],
+          "section_heading": "Introduction",
+          "prior_excerpt": "Risk Reports are another new requirement. Risk Reports will provide detailed information on the safety profile of our models at the time of publication."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-1-0095",
+          "target_unit_ids": [
+            "ANT-RSP-v3-2-0097",
+            "ANT-RSP-v3-2-0098"
+          ],
+          "section_heading": "Table (Capability/Usage Thresholds)",
+          "prior_excerpt": "Achieve an \"eyes on everything\" state for our internal AI development. We will comprehensively gather, centralize, and maintain logs for all critical AI-development activities, and use AI to analyze them for issues including security threats, concerning behavior by insiders (humans as well as AI systems themselves), and training processes or data that are out of line with the public Constitution that shapes and defines our AI models."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-1-0100",
+          "target_unit_ids": [
+            "ANT-RSP-v3-2-0103",
+            "ANT-RSP-v3-2-0104"
+          ],
+          "section_heading": "Table (Capability/Usage Thresholds)",
+          "prior_excerpt": "A frontier developer should make a strong argument that: No user or team of users (including those backed by top-tier states) will become significantly more likely to cause catastrophic harm via their usage of product surfaces or via theft of model weights."
+        }
+      ]
+    },
+    "ANT-RSP-v3-2_v3-3": {
+      "transition": "ANT-RSP-v3-2_v3-3",
+      "prior": "ANT-RSP-v3-2",
+      "target": "ANT-RSP-v3-3",
+      "splits": 1,
+      "target_units_affected": 2,
+      "target_units_total": 313,
+      "items": [
+        {
+          "prior_unit_id": "ANT-RSP-v3-2-0106",
+          "target_unit_ids": [
+            "ANT-RSP-v3-3-0108",
+            "ANT-RSP-v3-3-0109"
+          ],
+          "section_heading": "Table: Capability/usage thresholds and mitigations",
+          "prior_excerpt": "Accomplishing this would likely mean security roughly in line with RAND SL4. Security requirements would be calibrated to defend against the strongest plausible threat actors who are not bound by a credible industry-wide safety regime."
+        }
+      ]
+    },
+    "ANT-RSP-v3-3_v3-4": {
+      "transition": "ANT-RSP-v3-3_v3-4",
+      "prior": "ANT-RSP-v3-3",
+      "target": "ANT-RSP-v3-4",
+      "splits": 7,
+      "target_units_affected": 14,
+      "target_units_total": 334,
+      "items": [
+        {
+          "prior_unit_id": "ANT-RSP-v3-3-0045",
+          "target_unit_ids": [
+            "ANT-RSP-v3-4-0045",
+            "ANT-RSP-v3-4-0046"
+          ],
+          "section_heading": "1. Our Recommendations for Industry-Wide Safety",
+          "prior_excerpt": "We use these recommendations as the north star for our risk mitigations planning as well as our public policy work. We will strive to advance these recommendations through a mixture of example-setting, addressing unsolved technical problems, advocacy through industry groups, and policy advocacy."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-3-0065",
+          "target_unit_ids": [
+            "ANT-RSP-v3-4-0066",
+            "ANT-RSP-v3-4-0067"
+          ],
+          "section_heading": "Table: Capability/usage thresholds and mitigations",
+          "prior_excerpt": "This column summarizes commitments drawn from other sections of this policy and associated artifacts. It should be read as an overview, not as indicating any separate or additional plans."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-3-0101",
+          "target_unit_ids": [
+            "ANT-RSP-v3-4-0102",
+            "ANT-RSP-v3-4-0103"
+          ],
+          "section_heading": "Table: Capability/usage thresholds and mitigations",
+          "prior_excerpt": "Achieve an \"eyes on everything\" state for our internal AI development. We will comprehensively gather, centralize, and maintain logs for all critical AI-development activities, and use AI to analyze them for issues including security threats, concerning behavior by insiders (humans as well as AI systems themselves), and training processes or data that are out of line with the public Constitution that shapes and defines our AI models."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-3-0106",
+          "target_unit_ids": [
+            "ANT-RSP-v3-4-0108",
+            "ANT-RSP-v3-4-0109"
+          ],
+          "section_heading": "Table: Capability/usage thresholds and mitigations",
+          "prior_excerpt": "A frontier developer should make a strong argument that: No user or team of users (including those backed by top-tier states) will become significantly more likely to cause catastrophic harm via their usage of product surfaces or via theft of model weights."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-3-0197",
+          "target_unit_ids": [
+            "ANT-RSP-v3-4-0205",
+            "ANT-RSP-v3-4-0206"
+          ],
+          "section_heading": "3.6.1. Selecting external reviewers",
+          "prior_excerpt": "Have significant experience and expertise regarding evaluations for dangerous AI capabilities and propensities. It’s particularly important that they be knowledgeable about potential ways such evaluations might be misleading (for example, alignment faking)."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-3-0296",
+          "target_unit_ids": [
+            "ANT-RSP-v3-4-0304",
+            "ANT-RSP-v3-4-0305"
+          ],
+          "section_heading": "Changelog",
+          "prior_excerpt": "These include expanding the duties of the Responsible Scaling Officer; adding internal critique and external expert input on capability and safeguard assessments; new procedures related to internal governance; and maintaining a public page for overviews of past Capability and Safeguard Reports, RSP-related updates, and future plans."
+        },
+        {
+          "prior_unit_id": "ANT-RSP-v3-3-0305",
+          "target_unit_ids": [
+            "ANT-RSP-v3-4-0314",
+            "ANT-RSP-v3-4-0315"
+          ],
+          "section_heading": "Changelog",
+          "prior_excerpt": "The model capabilities and threat models corresponding with the ASL-3 Security Standard do not warrant protection against either group: the CBRN-3 threat models entail large numbers of users having access to unguarded models (which is more likely to occur through a universal jailbreak than via model theft), and the relatively small number of employees who might be capable of model theft does not significantly affect the risk level."
+        }
+      ]
+    },
+    "GDM-FSF-v3-0_v3-1": {
+      "transition": "GDM-FSF-v3-0_v3-1",
+      "prior": "GDM-FSF-v3-0",
+      "target": "GDM-FSF-v3-1",
+      "splits": 5,
+      "target_units_affected": 10,
+      "target_units_total": 281,
+      "items": [
+        {
+          "prior_unit_id": "GDM-FSF-v3-0-0003",
+          "target_unit_ids": [
+            "GDM-FSF-v3-1-0003",
+            "GDM-FSF-v3-1-0004"
+          ],
+          "section_heading": "Overview",
+          "prior_excerpt": "The Framework is informed by the broader conversation on Frontier AI Safety and Security Frameworks. The core components of such Frameworks are to:"
+        },
+        {
+          "prior_unit_id": "GDM-FSF-v3-0-0011",
+          "target_unit_ids": [
+            "GDM-FSF-v3-1-0014",
+            "GDM-FSF-v3-1-0015"
+          ],
+          "section_heading": "Overview",
+          "prior_excerpt": "The safety and security of frontier AI models is a global public good. The protocols here represent our current understanding and approach of how severe frontier AI risks may be anticipated and addressed."
+        },
+        {
+          "prior_unit_id": "GDM-FSF-v3-0-0014",
+          "target_unit_ids": [
+            "GDM-FSF-v3-1-0018",
+            "GDM-FSF-v3-1-0019"
+          ],
+          "section_heading": "Overview",
+          "prior_excerpt": "The Framework is based on early and evolving research. We may change our approach over time as we gain experience and insights on the projected capabilities of future frontier models."
+        },
+        {
+          "prior_unit_id": "GDM-FSF-v3-0-0019",
+          "target_unit_ids": [
+            "GDM-FSF-v3-1-0024",
+            "GDM-FSF-v3-1-0025"
+          ],
+          "section_heading": "Section 1: Framework",
+          "prior_excerpt": "This section describes the central components of the Frontier Safety Framework. These protocols represent our current understanding of and approach for how severe frontier AI risks may be anticipated and addressed."
+        },
+        {
+          "prior_unit_id": "GDM-FSF-v3-0-0089",
+          "target_unit_ids": [
+            "GDM-FSF-v3-1-0121",
+            "GDM-FSF-v3-1-0122"
+          ],
+          "section_heading": "2.1.1 Security Mitigations / fn8",
+          "prior_excerpt": "In other words, \"security level N\" indicates security controls and detections at a level generally aligned with RAND SL N. See https://www.rand.org/pubs/research_reports/RRA2849-1.html, pp 21-22."
+        }
+      ]
+    },
+    "XAI-RMF-2025-02_2025-08": {
+      "transition": "XAI-RMF-2025-02_2025-08",
+      "prior": "XAI-RMF-2025-02",
+      "target": "XAI-RMF-2025-08",
+      "splits": 2,
+      "target_units_affected": 4,
+      "target_units_total": 132,
+      "items": [
+        {
+          "prior_unit_id": "XAI-RMF-2025-02-0019",
+          "target_unit_ids": [
+            "XAI-RMF-2025-08-0037",
+            "XAI-RMF-2025-08-0038"
+          ],
+          "section_heading": "1. Approach to Benchmarking",
+          "prior_excerpt": "WMDP-Bio includes questions on topics such as bioweapons, reverse genetics, enhanced potential pandemic pathogens, viral vector research, and dual-use virology. WMDP-Cyber encompasses cyber reconnaissance, weaponization, exploitation, and post-exploitation."
+        },
+        {
+          "prior_unit_id": "XAI-RMF-2025-02-0023",
+          "target_unit_ids": [
+            "XAI-RMF-2025-08-0040",
+            "XAI-RMF-2025-08-0041"
+          ],
+          "section_heading": "1. Approach to Benchmarking",
+          "prior_excerpt": "Responses are open-ended, rather than multiple-choice. To construct the dataset, protocols were modified by introducing a single mistake that would cause the protocol to fail, as well as additional benign changes."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "artifact": "docs/codebook_v8.txt",
+  "purpose": "Cached prompt prefix for all four passes. Must remain byte-identical for the entire study, including the later Anthropic and xAI runs.",
+  "source": {
+    "path": "corpus/Codebook_Canonical_11_August_v8_final - with Quick Tests 12Aug2026.docx.pdf",
+    "sha256": "502cb18627e36ef57bfa532cd878a70320506f4fbb5592cc31b0a65e0b31467d",
+    "authority": "Named as the frozen codebook by corpus/decisions.md §0.1. No .docx original is present in this project; PDF chosen at user direction."
+  },
+  "conversion": {
+    "command": "pdftotext -layout -enc UTF-8 <source.pdf> docs/codebook_v8.txt",
+    "tool": "pdftotext",
+    "tool_version": "26.07.0",
+    "post_processing": "none - raw extractor output, unedited"
+  },
+  "output": {
+    "sha256": "a156350f1bf94be86fc8e7e7831c70a25ea96d7ea876e4210ebadebcee0bd585",
+    "bytes": 68574,
+    "characters": 68144,
+    "words": 7804,
+    "lines": 979,
+    "ends_with_newline": false
+  },
+  "verification": {
+    "section_1_code_table": "present, both header rows intact; 14 active codes plus C02 and C10 tombstones",
+    "section_3_2_direction_vocabularies": "present; all permitted values for C01, C03-C08 recoverable",
+    "section_3_3_c04_facet_rule": "present, including divergent-case instruction",
+    "section_3_4_consistency_rules": "present, all 8 rules",
+    "section_3_5_change_family_requires_two_versions": "present",
+    "section_4_code_entries": "14 of 14 present (C01, C03-C09, C11-C16), each with Code name, ID, Family, Theme, Definition, Inclusion criteria, Exclusion criteria, Direction",
+    "replacement_characters_U+FFFD": 0,
+    "known_artifacts": [
+      "lines 156-157: ID cell 'C11–C16' wrapped across two lines as 'C11–C1' + '6'. Value column ('No direction. Record NA.') is intact on line 155.",
+      "21 x U+200B ZERO WIDTH SPACE, all immediately after bullet glyphs in worked-example lists",
+      "20 x U+000C FORM FEED, one per source page boundary"
+    ]
+  }
+}

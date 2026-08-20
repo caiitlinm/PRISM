@@ -1,0 +1,143 @@
+WITHDRAWN 2026-08-13 — do NOT splice.
+The p6 graphic and its caption were excluded from the corpus by analyst decision.
+Retained only as a record; see OAI-PF-2023-p6-image-classification.md.
+
+DRAFT rev.1 — NOT APPROVED. NEW — never previously reviewed.
+Source: study/review/OAI-PF-2023-p6-img-000.png (the embedded raster, 3102×3435 px)
+        cross-checked against study/review/OAI-PF-2023-p6-06.jpg (page render)
+Drafted from the images only. There is no text layer for this graphic to anchor to —
+the entire content below is absent from OAI-PF-2023.txt.
+
+Per your ruling this enters the corpus, unselected cells as <<EMPTY>>.
+
+NOTE — ROW-LABEL RULE (convention rule 1): the row-label column holds bare labels
+("Cybersecurity", "CBRN", …). No prose beyond the label. Row-label blocks DROPPED.
+
+NOTE — THE CAPTION, needs your ruling. The sentence "The model score is the highest
+risk score in *any* category" is printed in bold below the grid, in caption position.
+It is also the aggregation rule you identified as load-bearing for C03. Those two
+facts pull in different directions:
+  - as caption="…", the A1 addition maps it to section_heading, which is metadata.
+    It would generate NO unit, and the rule would enter the corpus uncodeable.
+  - as prose outside <</TABLE>>, A1 segments it as an ordinary unit and it is
+    codeable — which is why you wanted page 6 in the corpus at all.
+I have taken the second reading and emitted it as prose immediately after the table,
+where it is in fact printed. Flagging because it is a judgment, and because the
+consequence of the first reading is silent: the sentence would be present in the file
+and still never coded.
+
+NOTE — NO PRINTED TITLE. The graphic carries no heading of any kind, so caption= is
+omitted rather than invented (rules 2 and 4). Consequence: section_heading will be
+empty for these cells. Say if you want a value and what it should be — I will not
+make one up.
+
+NOTE — THE POST-MITIGATION ROW differs structurally from the four grid rows. In the
+grid rows all four level positions are drawn as boxes, one filled and three outlined
+and empty. In the Post-Mitigation Model Score row only ONE box is drawn, under
+"Medium"; the Low, High and Critical positions have no box at all. I have emitted all
+four for rectangularity, so no block looks forgotten (rule 6), but the three
+<<EMPTY>> blocks there record "no box drawn", not "empty box". Recording the
+difference rather than flattening it.
+
+<<TABLE table_id="Illustrative Risk Matrix (p6)" page="6">>
+
+<<CELL row="Cybersecurity" col="Low">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Cybersecurity" col="Medium">>
+Medium
+<</CELL>>
+
+<<CELL row="Cybersecurity" col="High">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Cybersecurity" col="Critical">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="CBRN" col="Low">>
+Low
+<</CELL>>
+
+<<CELL row="CBRN" col="Medium">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="CBRN" col="High">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="CBRN" col="Critical">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Persuasion" col="Low">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Persuasion" col="Medium">>
+Medium
+<</CELL>>
+
+<<CELL row="Persuasion" col="High">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Persuasion" col="Critical">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Model Autonomy" col="Low">>
+Low
+<</CELL>>
+
+<<CELL row="Model Autonomy" col="Medium">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Model Autonomy" col="High">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Model Autonomy" col="Critical">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Post-Mitigation Model Score" col="Low">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Post-Mitigation Model Score" col="Medium">>
+Medium
+<</CELL>>
+
+<<CELL row="Post-Mitigation Model Score" col="High">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Post-Mitigation Model Score" col="Critical">>
+<<EMPTY>>
+<</CELL>>
+
+<</TABLE>>
+
+The model score is the highest risk score in *any* category
+
+[GRAPHIC NOTE — not part of the table]
+The four grid rows each show four boxes. One box per row is filled with blue and
+carries a printed word; the other three are white with a blue outline and are empty.
+The outlines darken progressively from Low to Critical, which is styling rather than
+data. A horizontal rule separates the four grid rows from the Post-Mitigation Model
+Score row. The word "Illustrative" runs diagonally across the graphic as a pale
+watermark, as on page 15, and appears in no cell.
+
+The asterisks around *any* in the sentence above are printed in the source as literal
+asterisks, not as italic markup. Transcribed as printed, per rule 4.
+
+[A1 REVIEW FLAG]
+This document contains a second illustrative scorecard on page 15 (table_id
+"Illustrative Scorecard (p15)"). The two are DIFFERENT examples, not duplicates: this
+one shows Cybersecurity at Medium and has no "Unknown Unknowns" row; p15 shows
+Cybersecurity at Low/Low and includes it. Do not set duplicate_of between them.

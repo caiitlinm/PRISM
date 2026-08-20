@@ -1,0 +1,84 @@
+DRAFT rev.3 — NOT APPROVED. Do not splice into .norm.txt until verified.
+Source: study/review/OAI-PF-2023-p15-15.jpg (200 dpi render of page 15)
+Drafted from the render only; scrambled extraction not consulted while drafting.
+
+Revisions from rev.1, per your rulings:
+- ROW-LABEL RULE (convention rule 1): the Tracked Risk Category column holds bare
+  labels only — "Cybersecurity", "CBRN", "Persuasion", "Model Autonomy", "Unknown
+  Unknowns". No prose beyond the label. DECISION FOR THIS TABLE: row-label blocks
+  are DROPPED.
+- Header description row retitled row="Level definition" per convention rule 10.
+- table_id carries the page. Retained from rev.2 even though the p6 graphic has since
+  been excluded from the corpus, because it is harmless and keeps the locator
+  unambiguous if p6 is ever reinstated.
+
+Revision in rev.3:
+- The [A1 REVIEW FLAG] warning against duplicate_of has been REMOVED. It existed
+  because the document held two illustrative scorecards; the p6 graphic is now
+  excluded by your decision, so this is the only scorecard in the corpus and there is
+  nothing for a segmenter to mistake it for.
+
+<<TABLE table_id="Illustrative Scorecard (p15)" caption="Illustrative Scorecard" page="15">>
+
+<<CELL row="Level definition" col="Tracked Risk Category">>
+<<EMPTY>>
+<</CELL>>
+
+<<CELL row="Level definition" col="Pre-mitigation risk level">>
+Determine pre-mitigation risk level using best known capability elicitation
+techniques
+<</CELL>>
+
+<<CELL row="Level definition" col="Post-mitigation risk level">>
+Determine overall risk level after mitigations are in place using best known
+capability elicitation techniques
+<</CELL>>
+
+<<CELL row="Cybersecurity" col="Pre-mitigation risk level">>
+Low
+<</CELL>>
+
+<<CELL row="Cybersecurity" col="Post-mitigation risk level">>
+Low
+<</CELL>>
+
+<<CELL row="CBRN" col="Pre-mitigation risk level">>
+Low
+<</CELL>>
+
+<<CELL row="CBRN" col="Post-mitigation risk level">>
+Low
+<</CELL>>
+
+<<CELL row="Persuasion" col="Pre-mitigation risk level">>
+Medium
+<</CELL>>
+
+<<CELL row="Persuasion" col="Post-mitigation risk level">>
+Low
+<</CELL>>
+
+<<CELL row="Model Autonomy" col="Pre-mitigation risk level">>
+Medium
+<</CELL>>
+
+<<CELL row="Model Autonomy" col="Post-mitigation risk level">>
+Low
+<</CELL>>
+
+<<CELL row="Unknown Unknowns" col="Pre-mitigation risk level">>
+Low
+<</CELL>>
+
+<<CELL row="Unknown Unknowns" col="Post-mitigation risk level">>
+Low
+<</CELL>>
+
+<</TABLE>>
+
+[GRAPHIC NOTE — not part of the table]
+All ten data cells carry a blue fill. The two cells reading "Medium" (Persuasion and
+Model Autonomy, both in the Pre-mitigation risk level column) are a visibly deeper
+blue than the eight cells reading "Low". The fill encodes the same ordinal risk level
+the cell text already states; it carries no additional value. The word "Illustrative"
+runs diagonally across the page as a background watermark and appears in no cell.

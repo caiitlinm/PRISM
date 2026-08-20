@@ -1,0 +1,737 @@
+{
+  "study": "AI safety framework coding study — PRISM",
+  "scope_this_run": {
+    "labs": [
+      "Anthropic",
+      "xAI"
+    ],
+    "note": "Second half. The first half (OpenAI, Google DeepMind) is complete and its accounting is in final_accounting. Configuration is identical to the first half except the three recorded departures D4-D6 of 2026-08-15, which change one chunking regex pair and two output ceilings and touch no prompt, codebook, model, effort, batch size or frozen unit.",
+    "first_half": {
+      "labs": [
+        "OpenAI",
+        "Google DeepMind"
+      ],
+      "status": "complete, all four checkpoints cleared"
+    }
+  },
+  "model": "claude-sonnet-5",
+  "model_resolved": "claude-sonnet-5",
+  "model_created_at": "2026-06-29T00:00:00Z",
+  "model_pin_note": "The API returns the bare alias in resp.model, not a dated identifier, so resp.model alone cannot detect the alias being repointed. model_created_at comes from GET /v1/models/claude-sonnet-5 and is the drift signal to re-check before the Anthropic and xAI runs. If it has moved, the underlying model changed mid-corpus and that is a confound across labs.",
+  "temperature": null,
+  "temperature_note": "Requested configuration was temperature 0. claude-sonnet-5 rejects any non-default sampling parameter with HTTP 400 ('`temperature` is deprecated for this model'), verified 2026-08-14. The parameter is omitted and sampling runs at the model default. Determinism is therefore not available in this run; it was never guaranteed by temperature 0 in any case. Restate in methods.",
+  "thinking": "adaptive (the thinking parameter is not set); depth controlled by effort=medium",
+  "thinking_note": "claude-sonnet-5 runs adaptive thinking when thinking is omitted. Thinking tokens are billed as output and count against max_tokens. The A1 segmentation pass is the exception and must run with thinking disabled — see calibration.adaptive_thinking_starves_a1.",
+  "batch_size_units": 15,
+  "repeats": 1,
+  "repeat_note": "One repeat, one model. No between-model or within-model agreement is computable from this run, by design. Reliability comes from human coding downstream.",
+  "concurrency": 8,
+  "concurrency_note": "Set at Checkpoint B, 2026-08-14, from the Stage 1.6 measurements: ~1.0 h for the 210 calls. Rate limits are untested; run_pass.py honours retry-after, backs off exponentially, ramps workers 3s apart and resumes on rerun, so an overshoot costs a restart rather than a rerun. Must match on the later Anthropic and xAI runs.",
+  "prompt_caching": {
+    "enabled": true,
+    "cached_prefix": "system[1] — the codebook block carries cache_control ephemeral; the pass prompt sits uncached in system[0]",
+    "minimum_cacheable_prefix_tokens": 1024
+  },
+  "artifacts": {
+    "codebook": {
+      "path": "docs/codebook_v8.txt",
+      "sha256": "a156350f1bf94be86fc8e7e7831c70a25ea96d7ea876e4210ebadebcee0bd585",
+      "bytes": 68574,
+      "provenance": "docs/codebook_v8.provenance.json"
+    },
+    "a1_prefix": {
+      "path": "docs/a1_prefix.txt",
+      "sha256": "fe707219f8986f35d2c09725bdc415c3ff4525c85142bd4912a2460ed079244b",
+      "bytes": 498,
+      "note": "Stable prefix for the A1 segmentation pass in place of the codebook. Withholding the code set from the segmenter keeps unit boundaries independent of the codes; units freeze at Checkpoint C and cannot be corrected afterwards. Below the 1024-token cache minimum, so A1 calls do not cache — acceptable at one call per document."
+    },
+    "a2_prefix": {
+      "path": "docs/a2_prefix.txt",
+      "sha256": "f64b1891947a05e88c98f967556641d269bba8af7bc4bb1519770112e68c3fce",
+      "bytes": 724,
+      "note": "Stable prefix for the A2 alignment pass in place of the codebook, on the A1 precedent. Added at Checkpoint B, 2026-08-14. The crosswalk decides which units are eligible to receive change codes at all, and review-protocol Stage 6 check 5 turns on an alignment whose purpose is to let C03 architecture_replaced fire, so an aligner holding the code set is being asked a leading question. Below the 1024-token cache minimum; at 7 calls the codebook cache would not have amortised either way."
+    },
+    "prompts": {
+      "A1-segment.md": {
+        "path": "study/prompts/A1-segment.md",
+        "sha256": "c8714d6eefd2f637235ef28770fb730c0091812ffbe9ea0d7ed190d85bdf83e5",
+        "bytes": 6280,
+        "payload_label": "V_TARGET",
+        "supersedes": "85caafdc65a2d1be4952d55f7294a9a790179a2c676fcad87ec37d4f75f71cf6",
+        "note": "OUTPUT section rewritten after the failed A1 run of 2026-08-14: an explicit no-preamble instruction, and worked unit_id examples for identifiers ending in a digit. The model had emitted GDM-FSF-v3-0001 for identifier GDM-FSF-v3-0 on 209/209 units of that document, consuming the identifier's trailing -0 as the first sequence digit."
+      },
+      "A2-align.md": {
+        "path": "study/prompts/A2-align.md",
+        "sha256": "972f421c89bffd9049120b43c9678cfeb1ee9cea929e41d50d3df9948045a635",
+        "bytes": 4115,
+        "payload_label": "ALIGNMENT_BATCH",
+        "supersedes": "ffc8b661a01019b8ee367987b08b5ef8120cadfb7c6aca5db79bb884b95e9735",
+        "note": "Step A3 amended 2026-08-14 to name aggregate scoring, rating and gating architectures as removal-worthy alongside categories, thresholds and governance bodies, and to distinguish an architecture replaced (align it to its successor) from one dropped (emit a removal). Run 1 left 15 of the 16 2023 Scorecard units neither aligned nor flagged, which is invisible to the change pass and left C03 architecture_replaced without an evidence path on the OpenAI transition."
+      },
+      "B-content-change.md": {
+        "path": "study/prompts/B-content-change.md",
+        "sha256": "bcd0ba9748bcfe018908b62e16570bf4180ab87427c6fe9ed4028b5cfb330b23",
+        "bytes": 10834,
+        "payload_label": "UNITS",
+        "note": "One prompt serves both coding passes; it emits all fourteen codes per unit. Family separation is applied when the tables are built, not at run time."
+      }
+    },
+    "scripts": {
+      "run_pass.py": {
+        "path": "study/scripts/run_pass.py",
+        "sha256": "7deeb243ae924a46106ab4024854ed4e6d3be0b5b900746eb3449c67c9a08673",
+        "supersedes": "36a13ca48261c09cc92cbc593ed3c3b662d88040c95d07012f65a9f322b1b436",
+        "note": "strip_fence() generalised to strip_noise(): keeps everything from the first line that parses as a JSON object to the last, dropping only scaffolding outside that span. Junk between records is left in place for validate_runs.py to fail on. run_log.jsonl now records 'stripped' (a line count) in place of 'fenced' (a boolean). Caching, ramp, backoff, resume and logging behaviour otherwise untouched."
+      },
+      "build_batches.py": {
+        "path": "study/scripts/build_batches.py",
+        "sha256": "07b4ce810ce1d206cd3104a45eaa2f32c15905d0861b143dc4c65ee1ae98cd13",
+        "supersedes": "f7a1c5713618c237bc54011dca3e701c1a96cbb8e40ccfb36a3fb4e7fc6d7b9e",
+        "note": "Two changes at Checkpoint B, 2026-08-14: A2_MAX_TOKENS 40000 -> 90000, and a layout-table guard on heading detection. Both must carry to the Anthropic and xAI runs. Third change 2026-08-14: transition_id stops the shared-prefix walk at a version or year token. Versions like v3-0/v3-1 span two hyphen tokens, so equality-stripping cut inside the version and produced GDM-FSF-v3-0_1. One transition here, six on the Anthropic/xAI half. Fixed before any A2 pass ran, since transition_id must match across both halves. Fourth change 2026-08-15, analyst decision D4 at Checkpoint B for the Anthropic/xAI half: NUMBERED_TOP and DOTTED_NUM now accept an optional period after the section number. GDM and OpenAI write '1  Introduction'; Anthropic writes '1. Our Recommendations' and '3.1.    Scope and Timing', which neither pattern matched, leaving the entire Anthropic section hierarchy invisible. Eight of nine RSPs produced a single 6,000-6,500 word chunk against A1_MAX_WORDS 4000, projecting to about 92,000 output tokens against A1's 64,000 stream ceiling; A1 truncation is unrecoverable because units freeze at Checkpoint C. Re-running the builder over all nineteen documents left the twelve frozen OpenAI/GDM a1 batch files byte-identical (diff -rq, no differences), so the first half's instrument is unchanged in effect.",
+        "supersedes_chain": [
+          "76daf5fe891355ea10fa96f03989fb06d879bea7b7e42ada18fc61adb595568c",
+          "f9597f21ea7beb40dbe0e65c50d1502de951cff16c8cda7cfc0c812762ce3738"
+        ],
+        "bytes": 20799
+      },
+      "validate_runs.py": {
+        "path": "study/scripts/validate_runs.py",
+        "sha256": "d32af0ebccced3e8d3afb174c0a391668300bfcceed619447a08c7fec3e66b12",
+        "bytes": 14752,
+        "note": "Structural validation per batch; never edits model output. Corrected 2026-08-14: an earlier version failed change-pass rows where a removal unit carried 0 or 1 on a content code. That was a misreading — 'removal units carry change codes only; their content codes are NA, not 0' is a Stage 8 table-building rule (they were never evaluated by the content pass), not a coding instruction. The check wrongly failed 29 valid batches and is now a value-domain check only. Re-pinned 2026-08-15 after a hash audit found the file on disk (14,752 bytes, modified 2026-08-14 22:01:48) did not match the pinned 7baeb0b6 (14,100 bytes). The edit postdates run_config.json (21:56) and the last run_log row (21:52) and was never recorded. It was identified exactly by reconstruction: removing the C04-facet block and its 'warns' threading from the current file reproduces the pinned sha256 bit-for-bit. The sole change is a warning-only check that C04 fired with value 1 but no facet, per codebook v8 §3.2. It appends to warns and never to errs, so it cannot fail a batch or change an exit code, and it lives in check_b, so A1 validation is byte-identical between the two versions. The first half's A1, content and change passes were re-validated under this version on 2026-08-15: 12/12, 92/92 and 89/89 ok, 0 failed. It surfaced 29 previously unseen C04-facet warnings in the change pass, which is a finding about the first half's coding, not about this script.",
+        "supersedes": "7baeb0b677513e3baec4ffe31ac8d67b38cda43d0a29f2c055b1f421003ca644",
+        "supersedes_chain": [
+          "0b2071c7c066cbcc8cf318aeb8d8f3b1231bb2f063be1af16ac968a8774cb510",
+          "15d76ed0bb7d43a55a3665b1aaec4235212c0f75c93322970baa3b462710b680"
+        ]
+      },
+      "freeze_units.py": {
+        "path": "study/scripts/freeze_units.py",
+        "sha256": "15787e4ddeab719e275d0701ab3fe338f6b5e043ddc3c245969a185f60c9e9ca",
+        "bytes": 8079,
+        "note": "Merges validated A1 chunk output into one frozen unit file per document, renumbering sequentially. Renumbering is required because build_batches estimates each chunk's first_unit_number from word counts: on 2026-08-14 GDM-FSF-v3-0 left a gap of six between chunks and GDM-FSF-v3-1 produced a seven-id overlap carrying different text. Old ids are therefore resolved per chunk, and duplicate_of is remapped within its own chunk. Nothing is dropped, merged, split or re-excerpted; seam repeats are reported for Stage 4, never removed."
+      },
+      "build_review_packs.py": {
+        "path": "study/scripts/build_review_packs.py",
+        "sha256": "e9989c81ef27e46b8bf8812682c91e88e816d3aa57f40e66f6908368e03af211",
+        "bytes": 13344,
+        "note": "Stage 4 review packs, implementing review-protocol.md checks 1-8. Three corrections were made against real output before the packs were trusted: table detection now falls back to unit_type, because GDM-FSF-v1-0 calls all three of its tables 'the table below' and never numbers them, so check 1 had reported zero tables for a document with three; check 3 triggers on digit/percentage/multiplier per the protocol rather than also on tier names, which flagged 82 of GDM-FSF-v3-1's 281 units against 11; and check 4 matches framing language anywhere in the excerpt rather than only sentence-initially, which had returned a false zero for GDM-FSF-v3-0 and v3-1 and would have told a reviewer the segmenter dropped rationale it had in fact retained."
+      },
+      "build_align_packs.py": {
+        "path": "study/scripts/build_align_packs.py",
+        "sha256": "e7c813073328e89365dd3e1d4b7167c75ab53f0b6bc7433d84445b679985c14c",
+        "bytes": 13934,
+        "note": "Stale-output guard corrected 2026-08-15 (departure 23): it validated crosswalks against the requested labs only, so the retained OpenAI/GDM crosswalks in study/crosswalk/ triggered a hard exit on the second half. Now validated against every lab in the manifest, with other-half transitions skipped. Re-assembly is idempotent: the four first-half crosswalks still total 1,316 rows, matching checkpoint_d.crosswalk_rows exactly.",
+        "supersedes": "fe852eae3544486a6263897912ebc40815d5e53ccbb067a00d36a8b106616a37",
+        "size": 14769
+      },
+      "build_tables.py": {
+        "path": "study/scripts/build_tables.py",
+        "sha256": "87bb8952005c4a7a964f518b763f62597025635c3b685bbf2c00b815d4a0f568",
+        "bytes": 11789,
+        "note": "cosmetic_split column added 2026-08-15 (D7, departure 25). Detects many-to-one alignments whose target excerpts concatenate to exactly the prior excerpt. Emitted in units.csv, coded_wide.csv and coded_long.csv.",
+        "supersedes": "13660aab84c8ba3d57247a27e96276d2c88c76c42905cf29c41f1d46c13f17f9",
+        "size": 14517
+      }
+    },
+    "run_plan": {
+      "path": "run-plan-openai-gdm.md",
+      "sha256": "9f9e85b787882dd75bb740190509313bd6416223755daf1c9d8edce8b6abd200",
+      "note": "Stage 2 deliverable, approved at Checkpoint B on 2026-08-14 together with decisions D1-D3. The A2 figures in section 5 are the pre-approval ones and assume the codebook as A2's cached prefix; D3 replaced that with a2_prefix.txt, which removes the cache read and adds about $0.20."
+    },
+    "review_protocol": {
+      "path": "study/review-protocol.md",
+      "sha256": "c3f8261afff1747fddda9079283ac8da63a650caaccb10df45ef387539fe55e7",
+      "note": "Seam table corrected for the GDM-FSF-v3-0 re-chunk and an untagged-tables section added, both at Checkpoint B 2026-08-14. Amended 2026-08-15 with the ANT-RSP-v1-0 task-2 exclusion: the .03/.04 seam is a real discontinuity rather than a dropped unit, and code absence in that appendix is absence by model refusal. Stage 4 and 6 checks themselves are unchanged, so the first half was reviewed under the same checks.",
+      "supersedes_chain": [
+        "f9eaa2f90756663a6ac0fce079323c828be3cb83dc9418b9ca20592053af668b"
+      ]
+    },
+    "run_plan_anthropic_xai": {
+      "path": "run-plan-anthropic-xai.md",
+      "sha256": "a7916109825815a0a5b798ec053557bb99ff40c1380e8ccbb974ceef57c472c6",
+      "note": "Stage 2 deliverable for the second half, approved at Checkpoint B on 2026-08-15 together with decisions D4-D6. Unit estimates use the measured first-half rate of 37.17 units per 1,000 words; cost projections use measured per-pass token profiles from run_log.jsonl, which reconcile to final_accounting exactly. Section 7a added 2026-08-15 recording the ANT-RSP-v1-0 exclusion.",
+      "supersedes_chain": [
+        "6229c1585bae819878a28e7357db31d6076cf8119011a58fa70b7691c6a1826d"
+      ]
+    },
+    "reports": {
+      "cosmetic-splits.json": {
+        "path": "study/review/cosmetic-splits.json",
+        "sha256": "7c1ca52dbd6cd7f02d72350c86af314f4ae2fdd44aa881155bb2f3726697d974",
+        "size": 38494
+      }
+    }
+  },
+  "departures_from_brief": [
+    "Four prompt files were specified; three exist. B-content and B-change share B-content-change.md.",
+    "temperature 0 is not expressible on this model (see temperature_note).",
+    "The assistant prefill in run_pass.py was removed; claude-sonnet-5 rejects a trailing assistant turn with HTTP 400.",
+    "B-content-change.md line 109 enforced a C09/C16 mutual exclusivity that codebook v8 §3.4 struck on 11 August 2026. The prompt was corrected to the codebook, along with worked examples 136 and 138.",
+    "A1-segment.md had no OUTPUT section; the unit schema and output format were moved in from A2-align.md STEP A4, and <<TABLE>>/<<CELL>> marker handling was added. A2-align.md was reduced to the five-field ID-only crosswalk.",
+    "The OAI-PF-2023 page 6 scorecard and its aggregation-rule caption were excluded from the corpus by analyst decision of 2026-08-13. Confirmed intentional by the analyst on 2026-08-14; the two review checks that depended on it were removed rather than left unrunnable. See study/review-protocol.md, Stage 4 check 9 and Stage 6 check 6. The Stage 6 scorecard-to-thresholds check (check 5) stands, since the page 15 scorecard is in the corpus.",
+    "A1 chunk size cut from the briefed 8000 words to 4000, so each chunk's unit output fits one streamed call. A1 additionally runs with thinking disabled and streaming enabled; with adaptive thinking it returns no text at all.",
+    "A2 is given docs/a2_prefix.txt rather than the codebook, a second departure from the brief's 'codebook as the cached prefix' after A1. Analyst decision D3 at Checkpoint B, 2026-08-14. Rationale in artifacts.a2_prefix.note.",
+    "A2_MAX_TOKENS raised 40000 -> 90000 in build_batches.py, and A2 switched to streaming at 64000 output tokens. Analyst decisions D1 and D2 at Checkpoint B, 2026-08-14. See a2_batching and pass_invocations.a2_stream_note.",
+    "A heading-detection guard was added to build_batches.py: a candidate boundary is rejected when four or more of the thirteen lines around it carry an interior run of three or more spaces, i.e. pdftotext column layout. Only OAI-PF-2023 p15 and XAI-RMF-2025-02 pp3-5 were hand-transcribed, so every other table in the corpus arrives as untagged column layout that table_mask cannot see, and its cells match the heading patterns. GDM-FSF-v3-0 line 455, '1 (exploratory): Possesses', is a cell of Table 2.2.3.a and had put the chunk boundary through the middle of that table. The guard moved the seam to line 427, '2.2.3 Harmful Manipulation'. Re-running the builder over all nineteen documents changed the chunking of GDM-FSF-v3-0 alone and left the other eighteen byte-identical, including all thirteen Anthropic and xAI documents.",
+    "run_pass.py strips a markdown code fence wrapping the whole response before writing, and records 'fenced': true in run_log.jsonl when it does. A1 emits a ```jsonl fence intermittently despite all three prompts forbidding it; without the removed assistant prefill there is nothing else forcing bare JSONL. Only a first or last non-blank fence line is removed, so no coded content can be altered. Every occurrence is logged and counted in the run summary.",
+    "A1-segment.md OUTPUT and run_pass.py strip_noise() were both changed on 2026-08-14 after the first A1 run failed validation 8/12. Two independent failure classes: a prose preamble ahead of the first record on 7/12 responses, and a malformed unit_id on 209/209 units of GDM-FSF-v3-0. Neither rate is transient, so the batches were not re-run unchanged; the rule of re-running a failing batch twice was not invoked. The failed run is retained at study/raw/a1.run1-invalid/ with its own README. All 12 batches were re-run under the amended prompt so that no document is segmented by a different instrument than any other. Analyst approved, including carrying both changes to the Anthropic and xAI half.",
+    "The 75-word excerpt ceiling is a warning in validate_runs.py, not a failure. A1-segment.md states it as a hard ceiling but review-protocol.md Stage 4 check 5 lists over-75 units as suspicious units for human review, so the design already expects and routes them. Failing a batch would resample all of its units to correct one excerpt. One unit in the frozen corpus exceeds it: GDM-FSF-v3-0-0069-a at 85 words, an 85-word sentence with no internal sentence boundary. Analyst decision 2026-08-14.",
+    "A2-align.md Step A3 was amended after the first A2 run and all five transitions re-run. The run did not fail validation — it was superseded because review-protocol Stage 6 check 5 came back negative for an instrument reason. Run 1 retained at study/raw/a2.run1-superseded/. Analyst approved 2026-08-14, binding both halves of the corpus.",
+    "review-protocol.md Stage 6 check 2 asks for one-to-many alignment groups. These are structurally inexpressible: A2-align.md emits one row per target unit with a single prior_unit_id, so a target can never carry two priors; alternates go to alignment_note. The packs report alignment_note alternates in their place, and add check 4a — rows where prior_unit_id is NONE while alignment_note names a candidate, which is self-contradictory and is the strongest missed-alignment signal available. 40 such rows corpus-wide, 35 on OAI-PF-2023_v2.",
+    "coded_wide.csv and coded_long.csv are keyed on (unit_id, transition_id, model, repeat), not (unit_id, model, repeat). The endpoint pair codes GDM-FSF-v3-1's 281 units twice, against two different prior versions, so the briefed grain is not unique. units.csv keeps one row per unit with transition_id and prior_* from the adjacent transition only.",
+    "The brief refers to 'the nine direction-bearing codes'; codebook v8 has seven (C01, C03-C08). The count predates the retirement of C02 and C10, both of which carried directions. The codebook governs and seven direction columns are emitted.",
+    "build_batches.py NUMBERED_TOP and DOTTED_NUM accept an optional period after the section number, so Anthropic's '1.' and '3.1.' headings are visible to the chunker. Analyst decision D4 at Checkpoint B for the second half, 2026-08-15. Without it eight of nine RSPs chunk at 6,000-6,500 words against the 4,000 cap and A1 truncates silently at its 64,000-token stream ceiling, freezing bad segmentation at Checkpoint C. Verified byte-identical output for all twelve frozen OpenAI/GDM a1 batches. All ten new chunk seams land on top-level section headings outside layout tables.",
+    "A2 --max-tokens raised 64000 -> 96000 for the Anthropic/xAI half. Analyst decision D5, 2026-08-15. OAI-PF-2023_v2 used 58,755 of 64,000 output tokens on the first half, 92% of ceiling; this half has 13 transitions against 5, and the Anthropic chain is eight consecutive point releases whose unit lists align densely. A truncated A2 call fails silently: target units vanish from the crosswalk and build_change proceeds without them.",
+    "B-change runs --stream --max-tokens 64000 from the start on the Anthropic/xAI half, against --max-tokens 21333 non-streaming on the first. Analyst decision D6, 2026-08-15. 22 of 89 change batches truncated at the non-streaming ceiling on the first half and were repaired by re-running. The retained coding came from the successful attempt either way, so the instrument behind the data is the same; what differs is the number of discarded attempts preceding it.",
+    "Codebook v8 §3.2 makes C04's facet required, but 29 of 75 C04 firings in the first half carry facet NA. Found 2026-08-15 by a validator check added after the first half was already validated. Accepted as a documented limitation rather than re-run or prompt-patched, analyst decision 2026-08-15; see first_half_c04_facet_finding. The same condition will be accepted on the Anthropic/xAI half so that both halves are coded and validated to the same standard.",
+    "A 394-word passage of ANT-RSP-v1-0 (appendix eval task 2, an instruction to write self-replicating malware) is excluded from the corpus because claude-sonnet-5 refuses to segment it - three attempts, deterministic, zero output tokens. Chunk 3 was rebuilt as two batches around it and both segment normally; no A1 parameter changed and no other document is affected. Analyst decision 2026-08-15. The excluded text is retained verbatim at study/batches/a1.chunk3-superseded/. See exclusions.ANT-RSP-v1-0_task2_lm_worm, which carries the localisation evidence and the three things to read before reporting on it. This is the second content exclusion in the study, after the OAI-PF-2023 page 6 scorecard, and the first caused by a model refusal rather than an analyst judgement.",
+    "23. build_align_packs.py stale-output guard scoped to the manifest rather than the requested labs (2026-08-15). The guard exited on any crosswalk outside --labs, which on a two-half study means the first half's own approved crosswalks. They must remain in study/crosswalk/ because build_tables globs the whole directory. Other-half transitions are now skipped rather than rebuilt; a transition belonging to no lab is still a hard error. Verified no first-half output changed: 1,316 crosswalk rows, unchanged.",
+    "24. Cosmetic-split flagging added at Stage 8 (D7, 2026-08-15). 66 many-to-one alignments carry text-identical content split at different granularity between versions; they are coded normally at Stage 7 and flagged post hoc rather than corrected, because re-segmentation is barred after Checkpoint C and pre-annotation would make the two halves' coding input non-comparable. See cosmetic_splits_finding.",
+    "25. build_tables.py emits a cosmetic_split column in all three CSVs (D7, 2026-08-15), flagging the 132 unit-transition rows belonging to the 66 text-identical splits. The detection is exact concatenation equality and runs from the frozen units plus the crosswalks, so the deliverables stay reproducible from the pipeline rather than patched after the fact. Measured effect: change codes fire on flagged rows at 7.6% against an 8.8% baseline — no inflation."
+  ],
+  "environment": {
+    "python": "3.9.6",
+    "venv": ".venv",
+    "anthropic_sdk": "0.122.0",
+    "pdftotext": "26.07.0",
+    "api_key_source": ".env (not exported; run_pass.py reads ANTHROPIC_API_KEY from the environment)"
+  },
+  "calibration": {
+    "date": "2026-08-14",
+    "measured_on": "OAI-PF-2023, B-content, 2 batches of 25 units, concurrency 1, max_tokens 21333",
+    "thinking_multiplier": 2.31,
+    "thinking_share_of_output_tokens": 0.57,
+    "chars_per_text_token_thinking_disabled": 2.496,
+    "b_pass_chars_per_coded_unit": 1511,
+    "b_pass_output_tokens_per_coded_unit": {
+      "at_effort_high_as_first_measured": 1400,
+      "at_effort_medium_selected": 1016
+    },
+    "tok_per_sec_single_stream": 128,
+    "cache_read_second_call": 23612,
+    "cache_confirmed": true,
+    "stop_reason": "max_tokens on both calls at effort high with 25-unit batches; the selected effort=medium + batch 15 combination is expected to end_turn",
+    "units_per_1000_words": 38,
+    "non_streaming_max_tokens_ceiling": 21333,
+    "ceiling_note": "The SDK refuses non-streaming requests where 3600*max_tokens/128000 > 600, i.e. above 21,333 output tokens. run_pass.py's MAX_TOKENS default of 32000 exceeds this and raises ValueError before any HTTP call.",
+    "adaptive_thinking_starves_a1": "With thinking at its default (adaptive), an A1 call returned 21,333 output tokens as thinking blocks only, with no text block and an empty output file. The same payload with thinking disabled produced 19,971 characters of JSONL from 8,000 tokens. A1 cannot run with adaptive thinking on.",
+    "effort_sweep": {
+      "measured_on": "OAI-PF-2023 B-content batch of 25 units, max_tokens 21333, concurrency 1",
+      "output_tokens_per_coded_unit": {
+        "disabled": 742,
+        "low": 841,
+        "medium": 1016,
+        "high": 1641
+      },
+      "units_completed_of_25": {
+        "disabled": 25,
+        "low": 25,
+        "medium": 21,
+        "high": 13
+      },
+      "low_vs_high_agreement_all_cells": "164/168 = 97.6%",
+      "low_vs_high_agreement_among_positives": "8/12 = 67%",
+      "low_missed": [
+        "C08 x2",
+        "C12 x1"
+      ],
+      "selected": "medium"
+    }
+  },
+  "written": "2026-08-15",
+  "effort": "medium",
+  "effort_note": "The API default is high. budget_tokens (a fixed thinking budget) is removed on claude-sonnet-5 and returns 400, so effort is the only control over thinking spend. Measured on one 25-unit B-content batch: output tokens per coded unit were 742 (thinking disabled), 841 (low), 1016 (medium), 1641 (high). low and high agreed on only 8 of 12 cells where either fired a code, with low missing C08 twice and C12 once, so low was rejected on validity grounds rather than cost. Must match on the later Anthropic and xAI runs.",
+  "batch_size_note": "25 was the requested size; it truncated at effort medium (21 of 25 units completed against the 21,333-token non-streaming ceiling), triggering the specified contingency of 15. 15 units is about 15,240 output tokens, roughly 29% headroom.",
+  "estimated_cost_two_labs_usd": {
+    "basis": "effort medium, batch 15, live concurrent calls, 1381 content units + 1315 change rows",
+    "intro_pricing_through_2026_08_31": 40.36,
+    "standard_pricing": 60.54,
+    "note": "Batches API (50% off) was considered and rejected: ~$20 saving, ~$7.65 of which is likely lost to prompt-cache misses on the 5-minute TTL, against losing the per-20-call progress reporting Stage 7 requires and a 24h-per-submission SLA."
+  },
+  "pass_invocations": {
+    "A1": "--payload-label V_TARGET --codebook docs/a1_prefix.txt --thinking disabled --stream --max-tokens 64000 --effort high",
+    "A2": "--payload-label ALIGNMENT_BATCH --codebook docs/a2_prefix.txt --stream --max-tokens 96000 --effort medium",
+    "B-content": "--payload-label UNITS --max-tokens 21333 --effort medium",
+    "B-change": "--payload-label UNITS --stream --max-tokens 64000 --effort medium",
+    "note": "A1 is pinned at effort high because that is the setting its segmentation was calibrated at; effort medium was selected on coding-quality evidence from the B passes only and has not been tested for segmentation granularity. A1 stays at high: the whole pass is $5.63 and its output freezes permanently at Checkpoint C.",
+    "a2_stream_note": "A2 streams at 64000 because output tokens per crosswalk row have never been measured. A row is ~43 tokens of text, but thinking is billed as output and was 57% of output in the only pass measured. At 90000-token batches the largest A2 call carries 301 rows: 18,060 output tokens at 60 tok/row, 45,150 at 150. The pinned 21333 survived only the optimistic case, and a truncated A2 call fails silently — units vanish from the crosswalk and build_change() proceeds without them.",
+    "A2_first_half": "--payload-label ALIGNMENT_BATCH --codebook docs/a2_prefix.txt --stream --max-tokens 64000 --effort medium",
+    "B-change_first_half": "--payload-label UNITS --max-tokens 21333 --effort medium",
+    "half_note": "A2 and B-change carry a raised output ceiling on the Anthropic/xAI half (D5, D6, 2026-08-15). The first-half values are retained above as A2_first_half and B-change_first_half. max_tokens is a ceiling, not a behavioural parameter: it cannot change what a call that was not going to truncate emits. A1 and B-content are unchanged."
+  },
+  "a2_batching": {
+    "max_tokens_per_batch": 90000,
+    "calls_this_run": 7,
+    "calls_anthropic_xai": 33,
+    "note": "build_a2 repeats the entire prior-unit list as a header on every batch. At ~186 tokens per unit record that header is 48,174 tokens for OAI-PF-2023 and 42,408 for GDM-FSF-v3-0, both larger than the original 40000 budget, which made the fill loop flush after every single target unit. Simulated against the actual loop: 40000 gives 688 calls and $63.68 here and 3,006 calls and $394.90 on the Anthropic/xAI half; 90000 gives 7 and 33. The crosswalk is identical either way. 90000 over 120000 because the $0.18 difference buys shorter per-call outputs."
+  },
+  "a1_chunking": {
+    "max_words": 4000,
+    "chunks": {
+      "OAI-PF-2023": 2,
+      "OAI-PF-v2": 3,
+      "GDM-FSF-v1-0": 1,
+      "GDM-FSF-v2-0": 1,
+      "GDM-FSF-v3-0": 2,
+      "GDM-FSF-v3-1": 3
+    },
+    "measured_units_per_1000_words": 39.1,
+    "measured_chars_per_unit": 941
+  },
+  "stage_3": {
+    "run": "2026-08-14",
+    "calls": 12,
+    "failed": 0,
+    "truncated": 0,
+    "throttled": 0,
+    "output_tokens": 505982,
+    "minutes": 15.1,
+    "concurrency": 8,
+    "units_total": 1351,
+    "units_per_document": {
+      "OAI-PF-2023": 250,
+      "OAI-PF-v2": 372,
+      "GDM-FSF-v1-0": 116,
+      "GDM-FSF-v2-0": 138,
+      "GDM-FSF-v3-0": 194,
+      "GDM-FSF-v3-1": 281
+    },
+    "validation": "12/12 pass, 11 warnings (10 noise-strip notices, 1 over-length excerpt)",
+    "noise_lines_stripped": 16,
+    "note": "Second A1 run. The first, at study/raw/a1.run1-invalid/, failed 8/12. The prompt fix eliminated the malformed unit_id class entirely (0/1351 against 209/209 on GDM-FSF-v3-0) but did NOT stop the prose preamble, which still appeared on 11 of 12 responses; strip_noise() is what keeps it out of the output files.",
+    "frozen": {
+      "units_total": 1351,
+      "files": "study/corpus/{lab}/units/{IDENTIFIER}.units.jsonl",
+      "report": "study/review/freeze-report.json",
+      "seams": "6 chunk seams, all clean; each lands on a real section heading",
+      "renumbering": "GDM-FSF-v3-0 had a 6-id gap between chunks; GDM-FSF-v3-1 a 7-id overlap. Both closed."
+    }
+  },
+  "stage_4": {
+    "built": "2026-08-14",
+    "packs": "study/review/{IDENTIFIER}.units-review.md",
+    "documents": 6,
+    "summary": {
+      "OAI-PF-2023": {
+        "units": 250,
+        "tables": 5,
+        "stem_flagged": 24,
+        "bar_missed": 5,
+        "framing": 4,
+        "suspicious": 13
+      },
+      "OAI-PF-v2": {
+        "units": 372,
+        "tables": 5,
+        "stem_flagged": 19,
+        "bar_missed": 12,
+        "framing": 12,
+        "suspicious": 4
+      },
+      "GDM-FSF-v1-0": {
+        "units": 116,
+        "tables": 3,
+        "stem_flagged": 10,
+        "bar_missed": 8,
+        "framing": 6,
+        "suspicious": 3
+      },
+      "GDM-FSF-v2-0": {
+        "units": 138,
+        "tables": 2,
+        "stem_flagged": 18,
+        "bar_missed": 8,
+        "framing": 10,
+        "suspicious": 0
+      },
+      "GDM-FSF-v3-0": {
+        "units": 194,
+        "tables": 5,
+        "stem_flagged": 8,
+        "bar_missed": 4,
+        "framing": 11,
+        "suspicious": 5
+      },
+      "GDM-FSF-v3-1": {
+        "units": 281,
+        "tables": 4,
+        "stem_flagged": 28,
+        "bar_missed": 11,
+        "framing": 12,
+        "suspicious": 3
+      }
+    },
+    "marker_leakage": "0 across all 1351 units",
+    "note": "Awaiting Checkpoint C. Units are written but not approved; nothing downstream may run."
+  },
+  "checkpoint_c": {
+    "approved": "2026-08-14",
+    "approved_by": "analyst",
+    "units_total": 1351,
+    "frozen_files": {
+      "GDM-FSF-v1-0": {
+        "path": "study/corpus/deepmind/units/GDM-FSF-v1-0.units.jsonl",
+        "sha256": "eafd272d6f9c39c12aecf79863cef677e533564d4ba272264f53f1db94e86cff",
+        "units": 116
+      },
+      "GDM-FSF-v2-0": {
+        "path": "study/corpus/deepmind/units/GDM-FSF-v2-0.units.jsonl",
+        "sha256": "f58aa59b103e82705c4d1d153351af1df92fbd6fd251ec48c7daf02e9e0c38af",
+        "units": 138
+      },
+      "GDM-FSF-v3-0": {
+        "path": "study/corpus/deepmind/units/GDM-FSF-v3-0.units.jsonl",
+        "sha256": "ae1c47bcba0cbd666f142940ede69fb690f9117e94310d3a07a8d9fb522bc504",
+        "units": 194
+      },
+      "GDM-FSF-v3-1": {
+        "path": "study/corpus/deepmind/units/GDM-FSF-v3-1.units.jsonl",
+        "sha256": "e045d34591081307f666872a78e385fc3287a0eba889437183e614c6d9e70150",
+        "units": 281
+      },
+      "OAI-PF-2023": {
+        "path": "study/corpus/openai/units/OAI-PF-2023.units.jsonl",
+        "sha256": "ace009f85d4ccb263734b898711eba6fa4744cc642171dc6121bef6a48a2c1aa",
+        "units": 250
+      },
+      "OAI-PF-v2": {
+        "path": "study/corpus/openai/units/OAI-PF-v2.units.jsonl",
+        "sha256": "26b9d5c1c203da405db8e935c23530961da75143fedf34a74ed7ffbf3e894f6c",
+        "units": 372
+      }
+    },
+    "note": "Segmentation is final. Each version is segmented exactly once, ever; these files must not change for the remainder of the study. The hashes above are the freeze record — verify them before Stage 7 and again before the Anthropic/xAI half."
+  },
+  "stage_5": {
+    "run": "2026-08-14 (second run, amended prompt)",
+    "calls": 5,
+    "failed": 0,
+    "truncated": 0,
+    "output_tokens": 185074,
+    "crosswalk_rows": 1316,
+    "aligned": 689,
+    "none": 577,
+    "removals": 50,
+    "per_transition": {
+      "OAI-PF-2023_v2": {
+        "rows": 379,
+        "aligned": 160,
+        "none": 212,
+        "removals": 7,
+        "orphans": 156,
+        "prior_units": 250
+      },
+      "GDM-FSF-v1-0_v2-0": {
+        "rows": 144,
+        "aligned": 72,
+        "none": 66,
+        "removals": 6,
+        "orphans": 50,
+        "prior_units": 116
+      },
+      "GDM-FSF-v2-0_v3-0": {
+        "rows": 225,
+        "aligned": 136,
+        "none": 58,
+        "removals": 31,
+        "orphans": 8,
+        "prior_units": 138
+      },
+      "GDM-FSF-v3-0_v3-1": {
+        "rows": 283,
+        "aligned": 203,
+        "none": 78,
+        "removals": 2,
+        "orphans": 16,
+        "prior_units": 194
+      },
+      "GDM-FSF-v1-0_v3-1": {
+        "rows": 285,
+        "aligned": 118,
+        "none": 163,
+        "removals": 4,
+        "orphans": 63,
+        "prior_units": 116
+      }
+    },
+    "validation": "5/5 pass",
+    "check_5": "OAI-PF-2023-0112, the unit carrying the Scorecard architecture claim, aligns one-to-many onto OAI-PF-v2-0149 and 0173. C03 architecture_replaced has an evidence path on the OpenAI transition. Units 0133-0145 are an explicitly illustrative template with placeholder values and correctly do not align.",
+    "a2_headroom_warning": "OAI-PF-2023_v2 emitted 58,755 output tokens against the 64,000 ceiling (92%). Anthropic's RSP transitions are larger and several are consecutive v3 point releases with high alignment rates. Raise --max-tokens or split those transitions before the second half runs."
+  },
+  "checkpoint_d": {
+    "approved": "2026-08-14",
+    "approved_by": "analyst",
+    "crosswalk_rows": 1316,
+    "note": "Alignment approved. Crosswalks are final input to the change pass."
+  },
+  "stage_7": {
+    "content_batches": 92,
+    "change_batches": 89,
+    "calls": 203,
+    "truncated_first_pass": 22,
+    "truncated_after_rerun": 0,
+    "failed": 0,
+    "validation": "92/92 content, 70/70 change adjacent, 19/19 change endpoint",
+    "note": "22 of 89 change batches truncated at the 21,333-token non-streaming ceiling, leaving 70 of 1,316 rows uncoded. Change records carry the prior unit inline so they run larger than content records; 15 rows land near 18,000 output tokens, close enough to the ceiling that sampling variance pushed ~25% over. Re-run with --stream --max-tokens 64000; batch size stayed at the pinned 15 and only the transport changed. The 67 batches that stopped on end_turn were never constrained and were not re-run. Truncated output retained at study/coded/change.truncated-run1/."
+  },
+  "stage_8": {
+    "built": "2026-08-14",
+    "files": {
+      "units.csv": 1351,
+      "coded_wide.csv": 1669,
+      "coded_long.csv": 23366
+    },
+    "encoding": "utf-8-sig, QUOTE_ALL, newlines in fields replaced with a space",
+    "c07_requires_c14": 0,
+    "removal_rows": 50,
+    "removal_rows_no_change_code": 31,
+    "untagged_by_document": {
+      "GDM-FSF-v1-0": "29/120",
+      "GDM-FSF-v2-0": "50/169",
+      "GDM-FSF-v3-0": "20/196",
+      "GDM-FSF-v3-1": "93/562",
+      "OAI-PF-2023": "30/250",
+      "OAI-PF-v2": "34/372"
+    },
+    "readme": "results/README.md"
+  },
+  "final_accounting": {
+    "calls": 242,
+    "failed": 0,
+    "rate_limited": 0,
+    "truncated_resolved": 25,
+    "noise_lines_stripped": 40,
+    "tokens_billed": 12163770,
+    "output_tokens": 4896192,
+    "spend_usd_intro": 54.8,
+    "spend_usd_standard_equivalent": 82.2,
+    "plan_estimate_intro": 40.36,
+    "variance_pct": 36,
+    "variance_note": "Overrun is re-runs, not per-call cost: A1 run 1 ($5.13), A2 run 1 ($2.43) and 22 truncated change batches. The passes that ran once landed within a few percent of plan.",
+    "elapsed_hours": 2.6,
+    "concurrency": 8
+  },
+  "first_half_c04_facet_finding": {
+    "found": "2026-08-15",
+    "what": "29 of 75 C04 firings in results/coded_long.csv carry facet NA, against codebook v8 §3.2, which makes the facet required on the same footing as a direction.",
+    "by_transition": {
+      "GDM-FSF-v1-0_v2-0": 6,
+      "GDM-FSF-v1-0_v3-1": 6,
+      "GDM-FSF-v2-0_v3-0": 2,
+      "GDM-FSF-v3-0_v3-1": 8,
+      "OAI-PF-2023_v2": 7
+    },
+    "why_unseen": "Corrected 2026-08-15: the condition was NOT unseen. results/README.md §6 already documents it with the same 29/75 figure and the same observed facet distribution (modality 39, bar 4, both 3). The validator check was evidently added at 22:01 on 2026-08-14 alongside that README section, so the validator would surface what had just been documented. What was stale was only this file's pin of validate_runs.py, which the 22:01 edit never updated. The warnings themselves had never been emitted, since the B passes were validated before the check existed.",
+    "status": "closed — accepted and documented, analyst decision 2026-08-15 (option 1)",
+    "note": "Warning-only: no batch failed, and the 29 rows are present and coded in the CSVs with facet NA. The second half will surface the same condition at validation time, so the two halves are handled differently unless a decision is recorded.",
+    "decision": "Accepted as a known limitation. The 29 rows stay as delivered, with facet NA. Re-running the 12 affected change batches was rejected: they passed validation, and re-coding output that did not fail is a departure from 'model failures are re-run, never hand-repaired' in a direction the study has not taken. Tightening B-content-change.md to require the facet was rejected as a cross-half confound on C04 — the second half would then be coded by a different instrument than the first. B-content-change.md is unchanged and its sha256 is unmoved.",
+    "consequence": "The second half will emit the same warning class at validation. Those warnings are expected, are not failures, and must not trigger a re-run: doing so would code the second half to a stricter standard than the first. Any C04 analysis across the corpus should treat facet as present-or-NA and report the NA rate; the first half's rate is 29/75 (39%).",
+    "already_documented_at": "results/README.md §6 Known limitations"
+  },
+  "exclusions": {
+    "ANT-RSP-v1-0_task2_lm_worm": {
+      "decided": "2026-08-15",
+      "decided_by": "analyst",
+      "document": "ANT-RSP-v1-0",
+      "passage": "Appendix eval task 2, 'Write a simple LM worm that will spread to totally undefended machines' — 394 words, lines 45-88 of the chunk-3 payload.",
+      "why": "claude-sonnet-5 returns stop_reason 'refusal' when asked to segment it. Three attempts, the maximum the study's re-run rule permits, each refusing in about one second with zero output tokens and zero billing. The refusal is deterministic.",
+      "localisation": "Each of the appendix's six tasks was run through A1 alone to find the minimal refusing set. Only task 2 refuses. Task 1 ('Set up a copycat of the Anthropic API for stealing API keys', 324 words) segments normally at 5,238 output tokens, as do tasks 3 (backdoor), 4 (SQL injection), 5 (flask) and the trailing threat-models section. The trigger is the passage, not the appendix, the document, or payload size.",
+      "not_a_coding_limit": "The B coding passes accept this content: a probe of the same text as unit excerpts under B-content-change.md returned stop_reason 'end_turn' and well-formed JSONL. The refusal is specific to A1's task shape - reproducing the passage verbatim as structured unit records - not to the text being unprocessable.",
+      "handling": "Chunk 3 was rebuilt as two batches around the passage: ANT-RSP-v1-0.03 (intro and task 1, 371 words) and ANT-RSP-v1-0.04 (tasks 3-5 and the threat-models section, 1,944 words). Both segment normally. ANT-RSP-v1-0 therefore has four A1 chunks where the builder produced three. No other document is affected and no A1 parameter changed.",
+      "retained_at": "study/batches/a1.chunk3-superseded/ — the original chunk-3 batch, the excluded text verbatim as excluded-task2-lm-worm.txt, and a README. The exclusion is auditable and reversible; a future model that does not refuse can segment it and reopen the decision.",
+      "scale": {
+        "excluded_words": 394,
+        "document_words": 10382,
+        "second_half_words": 91929,
+        "share_of_second_half": "0.43%",
+        "est_units_lost": "~15 of 3,424"
+      },
+      "read_this_before_reporting": "1. Do not read code absence in ANT-RSP-v1-0's appendix as a property of the framework. The passage is absent from the unit list by model refusal, not by analyst judgement about scope. 2. The appendix as a whole is present only in v1.0 and gone by v2.0, so it is the largest block of removed content in the Anthropic chain. That removal signal survives: roughly 80 of the ~95 appendix units were segmented and will align as removals on ANT-RSP-v1-0_v2-0 and on the ANT-RSP-v1-0_v3-4 endpoint. The exclusion shrinks that block by about 15 units; it does not erase it. 3. This is a cross-lab asymmetry. The OpenAI and Google DeepMind half contains no refused passage, so Anthropic's coverage is fractionally lower for a reason unrelated to what its frameworks say. Report the asymmetry rather than the raw coverage difference.",
+      "chunk_seam_note": "The ANT-RSP-v1-0 .03/.04 seam is a genuine discontinuity, not a page break: 394 words sit between them. freeze_units.py's seam check looks for repeated content across a seam and will correctly report none. Stage 4 reviewers should not read the gap as a dropped unit."
+    }
+  },
+  "stage_3_anthropic_xai": {
+    "ran": "2026-08-15",
+    "batches": 33,
+    "calls_logged": 36,
+    "refusals": [
+      "ANT-RSP-v1-0.03.jsonl",
+      "ANT-RSP-v1-0.03.jsonl",
+      "ANT-RSP-v1-0.03.jsonl"
+    ],
+    "truncated": [],
+    "validated": "45/45 ok, 0 failed (12 first-half + 33 second-half)",
+    "units_by_document": {
+      "ANT-RSP-v1-0": 355,
+      "ANT-RSP-v2-0": 338,
+      "ANT-RSP-v2-1": 322,
+      "ANT-RSP-v2-2": 348,
+      "ANT-RSP-v3-0": 278,
+      "ANT-RSP-v3-1": 301,
+      "ANT-RSP-v3-2": 313,
+      "ANT-RSP-v3-3": 313,
+      "ANT-RSP-v3-4": 334,
+      "XAI-FAIF-2025": 159,
+      "XAI-FAIF-2026": 123,
+      "XAI-RMF-2025-02": 108,
+      "XAI-RMF-2025-08": 132
+    },
+    "units_total": 3424,
+    "projected": 3417,
+    "output_tokens": 1287006,
+    "max_single_call": 57345,
+    "ceiling": 64000,
+    "note": "ANT-RSP-v1-0 has four chunks, not three: chunk 3 was rebuilt around the excluded task-2 passage. Largest call used 57,345 of 64,000 output tokens (90%); nothing truncated. The three refusal rows on ANT-RSP-v1-0.03 are the superseded chunk-3 payload, not the rebuilt batch of the same name."
+  },
+  "checkpoint_c_anthropic_xai": {
+    "status": "APPROVED",
+    "frozen_at": "2026-08-15",
+    "units_total": 3424,
+    "documents": 13,
+    "frozen_files": {
+      "ANT-RSP-v1-0": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v1-0.units.jsonl",
+        "sha256": "8763b24ae6ee485f9da1ed8d2bbfc86d9fdd7df45afb4da7de6feebccd14bde4",
+        "units": 355
+      },
+      "ANT-RSP-v2-0": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v2-0.units.jsonl",
+        "sha256": "64f99c8d16530358c9029cf306868596fcc23530648b23bc1b21be0cdf481f18",
+        "units": 338
+      },
+      "ANT-RSP-v2-1": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v2-1.units.jsonl",
+        "sha256": "d5e80818c9bbef1a2e0e43d6dd53612227a5ea2db2ab5b428ba1c7fa31c7525b",
+        "units": 322
+      },
+      "ANT-RSP-v2-2": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v2-2.units.jsonl",
+        "sha256": "2fdbdac144f9f6119889801271a50b4e4a4115def8a8a663fa443fe77b13bbc3",
+        "units": 348
+      },
+      "ANT-RSP-v3-0": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v3-0.units.jsonl",
+        "sha256": "6c550837056748891725c640ae00dd5333120d4caf9997672065a27bebe0dd48",
+        "units": 278
+      },
+      "ANT-RSP-v3-1": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v3-1.units.jsonl",
+        "sha256": "4511149ddf3a7ab95c55b949b4597a85b5660ad11724e977798f0a4d59da56cb",
+        "units": 301
+      },
+      "ANT-RSP-v3-2": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v3-2.units.jsonl",
+        "sha256": "104f535d126ae06da72dc03203bebaee664bae554e9736d06ac17ca2b159732a",
+        "units": 313
+      },
+      "ANT-RSP-v3-3": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v3-3.units.jsonl",
+        "sha256": "b188aee5742aa917bc9368fe924ee30ec1e8ae10d3a8e2174cf9c1a8c157985f",
+        "units": 313
+      },
+      "ANT-RSP-v3-4": {
+        "path": "study/corpus/anthropic/units/ANT-RSP-v3-4.units.jsonl",
+        "sha256": "1ff8580a731c98dfb862f06d57b83ee8d700e6657d209f11fda93d4effd6bbc8",
+        "units": 334
+      },
+      "XAI-RMF-2025-02": {
+        "path": "study/corpus/xai/units/XAI-RMF-2025-02.units.jsonl",
+        "sha256": "823d8180d403850178188798ddbb9f921869f3dca1868e0e85f9935f84216e51",
+        "units": 108
+      },
+      "XAI-RMF-2025-08": {
+        "path": "study/corpus/xai/units/XAI-RMF-2025-08.units.jsonl",
+        "sha256": "1d38ecd0a41d713a61d05b506bebede9cee1e6ab94f3f019005789edfe060cfc",
+        "units": 132
+      },
+      "XAI-FAIF-2025": {
+        "path": "study/corpus/xai/units/XAI-FAIF-2025.units.jsonl",
+        "sha256": "f9494b870296b53fe7695bb5df2c89b067f0298ac881e9822a2d4d0a7d9e17e4",
+        "units": 159
+      },
+      "XAI-FAIF-2026": {
+        "path": "study/corpus/xai/units/XAI-FAIF-2026.units.jsonl",
+        "sha256": "1b54ee94ea4df76bebbc17ec3b5e764e47c50069c68ad7c38d25a3c8258a91ed",
+        "units": 123
+      }
+    },
+    "freeze_report": "study/review/freeze-report-anthropic-xai.json",
+    "review_packs": "study/review/{IDENTIFIER}.units-review.md, 13 packs",
+    "seam_check": "12 seams across 13 documents, 0 repeated units, 0 dangling duplicate_of references.",
+    "note": "Hashes recorded at freeze time so any later change is detectable, but the checkpoint is NOT cleared: the analyst must work the Stage 4 packs first. Segmentation is final once approved — each version is segmented exactly once, ever. The ANT-RSP-v1-0 .03/.04 seam is a deliberate 394-word discontinuity; see exclusions.ANT-RSP-v1-0_task2_lm_worm.",
+    "first_half_hashes_reverified": "2026-08-15 — all six checkpoint_c.frozen_files match byte for byte (carry-forward item 2, cleared).",
+    "approved": "2026-08-15",
+    "approved_by": "analyst",
+    "approval_note": "Analyst reviewed the 13 Stage 4 packs and approved without flagged corrections. Segmentation is now final for these 13 documents; each version is segmented exactly once, ever, and these files must not change for the remainder of the study. The sha256 values in frozen_files are the freeze record — re-verify them before any later stage that reads units."
+  },
+  "cosmetic_splits_finding": {
+    "decision": "D7 — option 2, approved by analyst 2026-08-15",
+    "status": "closed 2026-08-15",
+    "what": "66 many-to-one alignments across 9 transitions in which the target excerpts concatenate to exactly the prior excerpt. The text is unchanged; only A1's segmentation granularity differs between the two versions.",
+    "cause": "A1 segments each document independently, as it must — each version is segmented exactly once, ever — so nothing keeps granularity consistent across versions. Near-identical documents are the only place the jitter can surface.",
+    "risk": "The target excerpt is a strict subset of the prior excerpt, which reads to a change coder as narrowed or removed content.",
+    "asymmetry": "First half 5 of 121 many-to-one (4%); second half 61 of 207 (29%), concentrated in the Anthropic point releases (v2-1_v2-2 85%, v3-0_v3-1 91%). Uncorrected this would make Anthropic appear to change its framework more than OpenAI or GDM for reasons that are an artefact of segmentation.",
+    "handling": "Stage 7 runs as configured — both halves coded identically, which is the constraint that cannot be recovered later. The 66 splits are flagged at Stage 8 with a cosmetic_split column, and change counts reported both raw and net. Options considered and rejected: re-segmenting (barred, Checkpoint C is cleared) and pre-annotating the crosswalks (would change the coding input asymmetrically across halves).",
+    "detection": "Exact and mechanical: normalised concatenation equality. Regenerable at any time from the frozen units and the crosswalks, so no approved artefact is touched.",
+    "report": "study/review/cosmetic-splits.json",
+    "read_this_before_reporting": "Do not report the raw second-half change counts against the first half without the net figures beside them. Also report whether the change coder was in fact fooled — that is measurable once Stage 7 output exists, and is a finding in its own right.",
+    "measured_effect": {
+      "flagged_rows": 132,
+      "splits": 66,
+      "change_code_rate_on_flagged": "7.6%",
+      "change_code_rate_baseline": "8.8%",
+      "codes_fired_on_flagged": {
+        "C08": 9,
+        "C06": 1,
+        "total": 10
+      },
+      "conclusion": "The change coder was NOT substantially misled. Flagged rows fire change codes slightly BELOW the baseline rate, not above it, and only 10 firings occur across all 132 rows. The subset-excerpt risk was real in principle and did not materialise. Report it as a measured null, not as an unquantified caveat.",
+      "caveat": "Small n. 10 firings on 132 rows cannot distinguish 'never fooled' from 'rarely fooled'; the 9 C08 firings are the ones to spot-check if the result is load-bearing."
+    }
+  },
+  "checkpoint_d_anthropic_xai": {
+    "approved": "2026-08-15",
+    "approved_by": "analyst",
+    "crosswalk_rows": 3583,
+    "transitions": 13,
+    "note": "Alignment approved. Crosswalks are final input to the change pass. Approved together with D7: the cosmetic-split artefact was found during this review, quantified, and deliberately left uncorrected in the coding input so that both halves are coded identically; it is flagged at Stage 8 instead. See cosmetic_splits_finding.",
+    "first_half_unchanged": "1,316 rows, matching checkpoint_d.crosswalk_rows."
+  },
+  "deliverables": {
+    "units.csv": {
+      "path": "results/units.csv",
+      "sha256": "3b875d96232139b709c71047d57680366622ea80f4e6f4daf5522c68d717153c",
+      "size": 3208366
+    },
+    "coded_long.csv": {
+      "path": "results/coded_long.csv",
+      "sha256": "10f9c6ba04c9fb14c094f661039004fcbe10f04319779fec42f6327283224d2f",
+      "size": 10408607
+    },
+    "coded_wide.csv": {
+      "path": "results/coded_wide.csv",
+      "sha256": "fa4d25f7c19c71f4c2b3fa860ea8e46f32d001b0d711c40b54eee9ed77881a73",
+      "size": 1040902
+    }
+  },
+  "first_half_csvs_retained": {
+    "path": "results/first-half-superseded/",
+    "why": "The three approved first-half CSVs, kept when results/ was regenerated over all 19 documents. Regeneration reproduced every first-half row byte-identically (1,351 / 23,366 / 1,669 rows, headers unchanged) before the replacement was made; the copies are the audit evidence for that claim."
+  },
+  "study_status": {
+    "state": "COMPLETE",
+    "completed": "2026-08-15",
+    "labs": 4,
+    "documents": 19,
+    "units": 4775,
+    "transitions": 18,
+    "crosswalk_rows": 4899,
+    "csv_rows": {
+      "units": 4775,
+      "coded_wide": 5649,
+      "coded_long": 79086
+    },
+    "reliability": "repeat=1 throughout; no agreement estimate is computable from this data."
+  }
+}

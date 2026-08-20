@@ -1,0 +1,12 @@
+ALIGNMENT PASS — NO CODEBOOK SUPPLIED
+
+This pass matches units of one framework version to their counterparts in an
+earlier version. It does not code and it does not segment. The coding codebook is
+deliberately withheld here: the crosswalk determines which units are eligible to
+receive change codes at all, so an aligner that knows the code set is being asked a
+leading question — it can align so as to make a particular code fireable rather
+than because the two units address the same object.
+
+Judge counterparts on function alone: the same threshold, category, governance body
+or commitment, whether or not the wording resembles it. Nothing about any coding
+scheme is relevant to that judgment, and none is supplied.
