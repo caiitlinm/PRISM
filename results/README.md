@@ -58,9 +58,10 @@ will produce similar but not identical coding.
 | `units.csv` | one row per unit | 1,351 |
 | `coded_wide.csv` | one row per (unit_id, transition_id, model, repeat) | 1,669 |
 | `coded_long.csv` | one row per (unit_id, transition_id, code_id, model, repeat) | 23,366 |
+|`Anthropic v1 - Task 2 Prompt inj DATA.xlsx`| one row per (unit_id, transition_id, code_id, model, repeat) | 13 |
 
 All three are UTF-8 **with BOM** (`utf-8-sig`), every field quoted, newlines inside
-fields replaced with a single space. Excerpts are otherwise verbatim.
+fields replaced with a single space. Excerpts are otherwise verbatim. File Anthropic v1 - Task 2 Prompt inj DATA.xlsx contains data that was manually transcribed as one excerpt from Anthropic's RSP V1, containing dangerous cyberattack content, was excluded from LLM coding.
 
 ### Why `transition_id` is in the key
 
